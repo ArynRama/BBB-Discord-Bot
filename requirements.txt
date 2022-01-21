@@ -9,4 +9,4 @@ yarl==1.6.3
 chardet==4.0.0
 idna==3.2
 configparser==5.2.0
-cryptography==2.4.8
+cryptography==3.4.8
