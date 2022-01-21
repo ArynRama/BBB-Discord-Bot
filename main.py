@@ -3,9 +3,9 @@ import discord
 import tracemalloc
 
 from discord import client
-#from cogs.config import Config
+from cogs.config import Config
 from discord.ext import commands
-#from cogs.errors import Blacklisted_Channel, Blacklisted_User
+from cogs.errors import Blacklisted_Channel, Blacklisted_User
 
 description = f'''{Config.desc}'''
 intents = discord.Intents.all()
