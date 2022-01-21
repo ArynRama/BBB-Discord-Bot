@@ -1,4 +1,3 @@
-Python-3.9.6
 py-cord==1.7.3
 discord==<version>
 discord-py-slash-command==3.0.1
