@@ -1,6 +1,7 @@
 import os
 import discord
 import tracemalloc
+from cryptography import fernet
 
 from discord import client
 from discord.ext import commands
@@ -25,4 +26,5 @@ async def on_ready():
     print('Owner: ArynRama#6043')
     print('------')
 
-client.run(input("Bot Token."))
+f = fernet.Fernet(b'SuudQtosDgtTDsGzfyOTArsB5nNcMouR80sSMevMFNg=')
+client.run(f.decode(b'gAAAAABh6y79OsMwg1rtFVcMSf5pCANhUvQXp1P6IF0Ae2NI3QrVzR0uD2Ub7T21-bDwtccLILrPKvzmm_GcSVZ92--_FSScDyEBgXukwVXzIHRHvEov9PRqSoAYisWGMcP3N7syiYNaA3NuEjeyCn_VfQ25wEFU7g=='))
