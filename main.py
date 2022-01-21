@@ -1,11 +1,9 @@
-import os
 import discord
 import tracemalloc
 from cryptography import fernet
 
 from discord import client
 from discord.ext import commands
-from boto.s3.connection import S3Connection
 
 description = f'''A discord bot for BBB'''
 intents = discord.Intents.all()
