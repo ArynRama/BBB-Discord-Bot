@@ -135,36 +135,5 @@ class Dev(commands.Cog):
         await ctx.send(embed=embed, delete_after=5)
         print("working.")
     
-    @commands.group(pass_contex=True)
-    async def blacklist(self, ctx):
-        """Blacklist user or channel"""
-        embed = discord.Embed(title = "add or remove users or channels from the blacklist.", color=Config.botcolor())
-        ctx.send(embed=embed, delete_after = 5)
-    
-    @blacklist.command()
-    async def user(self, ctx, do:str, member:discord.User, *, reason:str="Default."):
-        """Stops user from using commands"""
-        if do == "add".casefold():
-            if self.bot.is_owner(ctx.message.author):
-                with open(r"C:\Users\aryan\Documents\Workspace\Bots\DiscordBot2\json\bl_users.json", "+") as f:
-                    users = json.load(f)
-                    users[member.id] = reason
-                    json.dump(users,f)
-                embed = discord.Embed(title = f"{member} added to the blacklist for {reason}.", color = Config.botcolor())
-                await ctx.send(embed=embed,delete_after=5)  
-            else:
-                if reason == "Default":
-                    embed = discord.Embed(title="Invalid reason given.",color=Config.botcolor())
-                    await ctx.send(embed=embed,delete_after=5)
-                else:
-                    with open(r"C:\Users\aryan\Documents\Workspace\Bots\DiscordBot2\json\bl_users.json", "+") as f:
-                        users = json.load(f)
-                        users[member.id] = reason
-                        json.dump(users,f)
-                    embed = discord.Embed(title = f"{member} added to the blacklist for {reason}.", color = Config.botcolor())
-                    await ctx.send(embed=embed,delete_after=5) 
-        elif do == "ba":
-            await ctx.send("ello")
-
 def setup(client):
     client.add_cog(Dev(client))
