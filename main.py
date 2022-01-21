@@ -1,3 +1,4 @@
+import os
 import discord
 import tracemalloc
 
@@ -65,4 +66,4 @@ class LoadCogs:
                 ext, exc))
     print("------")
 
-client.run(token)
+client.run(os.environ("token"))
