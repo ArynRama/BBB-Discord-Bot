@@ -4,6 +4,7 @@ import tracemalloc
 
 from discord import client
 from discord.ext import commands
+from boto.s3.connection import S3Connection
 
 description = f'''A discord bot for BBB'''
 intents = discord.Intents.all()
@@ -24,4 +25,4 @@ async def on_ready():
     print('Owner: ArynRama#6043')
     print('------')
 
-client.run(os.environ("token"))
+client.run(input("Bot Token."))
