@@ -1,4 +1,3 @@
-import json
 import discord
 import tracemalloc
 
@@ -66,4 +65,4 @@ class LoadCogs:
                 ext, exc))
     print("------")
 
-client.run(Config.token())
+client.run(token)
