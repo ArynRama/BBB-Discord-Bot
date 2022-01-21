@@ -1,16 +1,9 @@
-import json
-import os
-import sys
 import main
 import discord
 
 from cogs.config import Config
 from cogs.errors import NotDev
 from discord.ext import commands
-
-def restart_bot():
-    os.execv("main.py", ['python'] + sys.argv)
-
 class Dev(commands.Cog):
     """Developer only commands."""
     def __init__(self, client):
@@ -19,10 +12,10 @@ class Dev(commands.Cog):
     async def cog_check(self, ctx):
         if await self.client.is_owner(ctx.author):
             return True
-        elif await Config.devs() == str(ctx.author.id):
-            return True
-        elif str(ctx.author.id) in await Config.devs():
-            return True
+        #elif await Config.devs() == str(ctx.author.id):
+        #    return True
+        #elif str(ctx.author.id) in await Config.devs():
+        #    return True
         else:
             raise NotDev("Not a dev.")
 
@@ -45,7 +38,7 @@ class Dev(commands.Cog):
         embed.add_field(name="Restarted by",
                         value=f"{ctx.author}({ctx.author.id})")
         await self.client.fetch_channel(self.client, 887472179749462076).send(embed=embed)
-        await restart_bot()
+
     
     @bot.command(aliases=["shutdown", "logout"])
     async def disconnect(self, ctx):
