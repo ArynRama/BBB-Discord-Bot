@@ -50,7 +50,7 @@ class LoadCogs:
             print('Failed to load dependencie {}\n{}'.format(
             ext, exc))
             print(ext)
-            exit()
+
 
     print("------")
     print("Loading extensions...")
