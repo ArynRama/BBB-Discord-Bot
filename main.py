@@ -15,7 +15,7 @@ async def get_prefix(client, message):
     return commands.when_mentioned_or(*prefixes)(client, message)
 
  
-client = commands.Bot(command_prefix=get_prefix(),description=description, intent=intents)
+client = commands.Bot(command_prefix=get_prefix,description=description, intent=intents)
 
 @client.event
 async def on_ready():
