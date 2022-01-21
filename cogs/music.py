@@ -26,6 +26,7 @@ class Music(commands.Cog):
 
     @commands.command(pass_context=True)
     async def join(self, ctx):
+        """Makes the bot join the channel you're in"""
         if ctx.author.voice:
             channel = ctx.message.author.voice.channel
             voice = await channel.connect()
@@ -37,6 +38,7 @@ class Music(commands.Cog):
 
     @commands.command(pass_context=True)
     async def leave(self, ctx):
+        """Makes the bot leave the voice channel."""
         if ctx.voice_client:
             await ctx.guild.voice_client.disconnect()
             await ctx.send("Disconnected.", delete_after=5)
@@ -45,6 +47,7 @@ class Music(commands.Cog):
 
     @commands.command(pass_context=True)
     async def pause(self, ctx):
+        """Pauses the music."""
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         if voice.is_playing:
             await ctx.send("Pausing...", delete_after=5)
@@ -54,6 +57,7 @@ class Music(commands.Cog):
 
     @commands.command(pass_context=True)
     async def resume(self, ctx):
+        """Resumes the music"""
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         if voice.is_paused:
             await ctx.send("Resuming...", delete_after=5)
@@ -63,11 +67,13 @@ class Music(commands.Cog):
 
     @commands.command(pass_context=True)
     async def stop(self, ctx):
+        """Stops the music."""
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         await voice.stop()
 
     @commands.command(pass_context=True)
     async def play(self, ctx, *, args):
+        """Plays music."""
         voice = ctx.guild.voice_client
         name = args.lower()
         song = "music/" + name + ".mp3"
@@ -78,6 +84,7 @@ class Music(commands.Cog):
 
     @commands.command(pass_context=True)
     async def queue(self, ctx, *, args):
+        """Queues a song."""
         name = args.lower()
         song = "music/" + name + ".mp3"
         guild_id = ctx.message.guild.id
