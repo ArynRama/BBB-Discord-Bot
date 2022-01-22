@@ -78,8 +78,7 @@ class Music(commands.Cog):
         song = "music/" + name + ".mp3"
         source = FFmpegPCMAudio(song)
         await ctx.send(f"Playing {args}.")
-        player = voice.play(source, after=lambda x=None: check_queue(
-            ctx, ctx.message.guild.id))
+        voice.play(source)
 
     @commands.command(pass_context=True)
     async def queue(self, ctx, *, args):
