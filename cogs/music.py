@@ -31,8 +31,7 @@ class Music(commands.Cog):
             channel = ctx.message.author.voice.channel
             voice = await channel.connect()
             await ctx.send(f"Joining {channel.name}", delete_after=5)
-            source = FFmpegPCMAudio("music/Riptide.mp3")
-            voice.play(source)
+            voice.stop
         else:
             await ctx.send("You must be connected to a voice channel.", delete_after=5)
 
