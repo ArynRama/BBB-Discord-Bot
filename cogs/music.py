@@ -6,7 +6,7 @@ from cogs.config import Config
 
 queues = {}
 
-embed = discord.Embed(color=Config.botcolor)
+embed = discord.Embed(color=Config.botcolor())
 
 def check_queue(ctx, id):
     if queues[id] != {}:
