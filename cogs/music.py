@@ -68,7 +68,7 @@ class Music(commands.Cog):
     async def stop(self, ctx):
         """Stops the music."""
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
-        await voice.stop()
+        await voice.pause()
 
     @commands.command(pass_context=True)
     async def play(self, ctx, *, args):
