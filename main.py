@@ -7,7 +7,7 @@ from cogs.config import Config
 from discord.ext import commands
 from cryptography import fernet
 
-description = f'''{Config.desc}'''
+description = f'''{Config.desc()}'''
 intents = discord.Intents.all()
 tracemalloc.start()
 
