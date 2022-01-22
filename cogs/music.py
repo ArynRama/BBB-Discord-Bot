@@ -3,10 +3,7 @@ from discord.ext import commands
 from discord import FFmpegPCMAudio
 from cogs.config import Config
 
-
 queues = {}
-
-embed = discord.Embed(color=Config.botcolor())
 
 def check_queue(ctx, id):
     if queues[id] != {}:
@@ -31,11 +28,11 @@ class Music(commands.Cog):
         if ctx.author.voice:
             channel = ctx.message.author.voice.channel
             voice = await channel.connect()
-            embed.title = f"Joining {channel.name}"
+            embed = discord.Embed(color=Config.botcolor(), title=f"Joining {channel.name}")
             await ctx.send(embed = embed, delete_after=5)
             voice.stop
         else:
-            embed.title = "You must be connected to a voice channel."
+            embed = discord.Embed(color=Config.botcolor(), title = "You must be connected to a voice channel.")
             await ctx.send(embed = embed, delete_after=5)
 
     @commands.command(pass_context=True)
@@ -43,10 +40,10 @@ class Music(commands.Cog):
         """Makes the bot leave the voice channel."""
         if ctx.voice_client:
             await ctx.guild.voice_client.disconnect()
-            embed.title = "Disconnected."
+            embed = discord.Embed(color=Config.botcolor(), title = "Disconnected.")
             await ctx.send(embed = embed, delete_after=5)
         else:
-            embed.title = "I am not connected to a voice channel."
+            embed = discord.Embed(color=Config.botcolor(), title = "I am not connected to a voice channel.")
             await ctx.send(embed = embed, delete_after=5)
 
     @commands.command(pass_context=True)
@@ -54,11 +51,11 @@ class Music(commands.Cog):
         """Pauses the music."""
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         if voice.is_playing:
-            embed.title = "Pausing..."
+            embed = discord.Embed(color=Config.botcolor(), title = "Pausing...")
             await ctx.send(embed = embed, delete_after=5)
             await voice.pause()
         else:
-            embed.title = "Not playing anything."
+            embed = discord.Embed(color=Config.botcolor(), title="Not playing anything.")
             await ctx.send(embed = embed, delete_after=5)
 
     @commands.command(pass_context=True)
@@ -66,11 +63,11 @@ class Music(commands.Cog):
         """Resumes the music"""
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         if voice.is_paused:
-            embed.title = "Resuming..."
+            embed = discord.Embed(color=Config.botcolor(), title = "Resuming...")
             await ctx.send(embed = embed, delete_after=5)
             await voice.resume()
         else:
-            embed.title = "Not paused right now."
+            embed = discord.Embed(color=Config.botcolor(), title = "Not paused right now.")
             await ctx.send(embed = embed, delete_after=5)
 
     @commands.command(pass_context=True)
@@ -78,7 +75,7 @@ class Music(commands.Cog):
         """Stops the music."""
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         await voice.pause()
-        embed.title = "Stoping."
+        embed = discord.Embed(color=Config.botcolor(), title = "Stoping.")
         await ctx.send(embed = embed, delete_after=5)
 
     @commands.command(pass_context=True)
@@ -88,7 +85,7 @@ class Music(commands.Cog):
         name = args
         song = "music/" + name + ".mp3"
         source = FFmpegPCMAudio(song)
-        embed.title = f"Playing {args}."
+        embed = discord.Embed(color=Config.botcolor(), title = f"Playing {args}.")
         await ctx.send(embed=embed,delete_after=5)
         voice.play(source)
 
@@ -101,7 +98,7 @@ class Music(commands.Cog):
         if args == "":
             await ctx.send(queues)
         else:
-            embed.title = "Added to queue."
+            embed = discord.Embed(color=Config.botcolor(), title = "Added to queue.")
             await ctx.send(embed = embed, delete_after = 5)
             if guild_id in queues:
                 queues[guild_id].append(song)
