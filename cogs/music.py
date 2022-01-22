@@ -74,7 +74,7 @@ class Music(commands.Cog):
     async def play(self, ctx, *, args):
         """Plays music."""
         voice = ctx.guild.voice_client
-        name = args.lower()
+        name = args
         song = "music/" + name + ".mp3"
         source = FFmpegPCMAudio(song)
         await ctx.send(f"Playing {args}.")
