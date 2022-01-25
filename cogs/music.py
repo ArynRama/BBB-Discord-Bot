@@ -84,52 +84,46 @@ class Music(commands.Cog):
     async def play(self, ctx, *, args):
         """Plays music."""
         voice = ctx.guild.voice_client
-        YDL_OPTIONS = {'format':"bestaudio"}
-        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
-        if args.__contains__("youtube.com"):
-            with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                info = ydl.extract_info(args, download = False)
-                url2 = info['formats'][0]['url']
-                source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-                voice.play(source)
-                embed = discord.Embed(color=Config.botcolor(), title = f"Playing {args}.")
-                await ctx.send(embed=embed,delete_after=5)
-        elif args.__contains__("youtu.be"):
-
-            with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                info = ydl.extract_info(args, download=False)
-                url2 = info['formats'][0]['url']
-                source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-                voice.play(source)
-                embed = discord.Embed(
-                    color=Config.botcolor(), title=f"Playing {args}.")
-                await ctx.send(embed=embed, delete_after=5)
+        if voice.is_playing():
+            embed = discord.Embed(color=Config.botcolor(), title = "Already playing a song.")
+            await ctx.send(embed=embed,delete_after=5)
         else:
-            link = youtubesearchpython.VideosSearch(args, limit =1)
-            with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                search = youtubesearchpython.VideosSearch(args, limit =1)
-                url = search['result'][0]['link']
-                source = await discord.FFmpegOpusAudio.from_probe(url, **FFMPEG_OPTIONS)
-                voice.play(source)
-                embed = discord.Embed(color=Config.botcolor(), title = f"Playing {link}.")
-                await ctx.send(embed=embed,delete_after=5)
+            YDL_OPTIONS = {'format':"bestaudio"}
+            FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
+            if args.__contains__("youtube.com"):
+                with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+                    info = ydl.extract_info(args, download = False)
+                    url2 = info['formats'][0]['url']
+                    source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+                    voice.play(source)
+                    embed = discord.Embed(color=Config.botcolor(), title = f"Playing {args}.")
+                    await ctx.send(embed=embed,delete_after=5)
+            elif args.__contains__("youtu.be"):
+            
+                with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+                    info = ydl.extract_info(args, download=False)
+                    url2 = info['formats'][0]['url']
+                    source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+                    voice.play(source)
+                    embed = discord.Embed(
+                        color=Config.botcolor(), title=f"Playing {args}.")
+                    await ctx.send(embed=embed, delete_after=5)
+            else:
+                link = youtubesearchpython.VideosSearch(args, limit =1)
+                with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+                    search = youtubesearchpython.VideosSearch(args, limit =1)
+                    url = search['result'][0]['link']
+                    source = await discord.FFmpegOpusAudio.from_probe(url, **FFMPEG_OPTIONS)
+                    voice.play(source)
+                    embed = discord.Embed(color=Config.botcolor(), title = f"Playing {link}.")
+                    await ctx.send(embed=embed,delete_after=5)
 
 
     @commands.command(pass_context=True)
     async def queue(self, ctx, *, args):
-        """Queues a song."""
-        name = args.lower()
-        song = "music/" + name + ".mp3"
+        """View the queue."""
         guild_id = ctx.message.guild.id
-        if args == "":
-            await ctx.send(queues)
-        else:
-            embed = discord.Embed(color=Config.botcolor(), title = "Added to queue.")
-            await ctx.send(embed = embed, delete_after = 5)
-            if guild_id in queues:
-                queues[guild_id].append(song)
-            else:
-                queues[guild_id] = song
+        await ctx.send(queues[guild_id])
 
 
 def setup(client):
