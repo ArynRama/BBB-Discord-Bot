@@ -1,9 +1,9 @@
 import discord
 import youtube_dl
-import youtubesearchpython
 from cogs.config import Config
 from discord.ext import commands
 from discord import FFmpegPCMAudio
+from youtubesearchpython import VideosSearch
 
 queues = {}
 
@@ -25,7 +25,7 @@ class Music(commands.Cog):
         print("Music has been loaded.")
 
     @commands.command(pass_context=True)
-    async def join(self, ctx):
+    async def join(self, ctx, member:discord.Member=None):
         """Makes the bot join the channel you're in"""
         if ctx.author.voice:
             channel = ctx.message.author.voice.channel
@@ -110,14 +110,13 @@ class Music(commands.Cog):
                             color=Config.botcolor(), title=f"Playing {args}.")
                         await ctx.send(embed=embed, delete_after=5)
                 else:
-                    link = youtubesearchpython.VideosSearch(args, limit =1)
                     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                        search = youtubesearchpython.VideosSearch(args, limit =1)
+                        search = VideosSearch(args, limit =1)
                         result = search.result()
                         url = result['result'][0]['link']
                         source = await discord.FFmpegOpusAudio.from_probe(url, **FFMPEG_OPTIONS)
                         voice.play(source)
-                        embed = discord.Embed(color=Config.botcolor(), title = f"Playing {link}.")
+                        embed = discord.Embed(color=Config.botcolor(), title = f"Playing {url}.")
                         await ctx.send(embed=embed,delete_after=5)
         else: 
             embed = discord.Embed(color=Config.botcolor(),title="Not connected to a voice channel.")
