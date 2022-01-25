@@ -113,7 +113,7 @@ class Music(commands.Cog):
                     link = youtubesearchpython.VideosSearch(args, limit =1)
                     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
                         search = youtubesearchpython.VideosSearch(args, limit =1)
-                        url = search['result'][0]['link']
+                        url = search.result['result'][0]['link']
                         source = await discord.FFmpegOpusAudio.from_probe(url, **FFMPEG_OPTIONS)
                         voice.play(source)
                         embed = discord.Embed(color=Config.botcolor(), title = f"Playing {link}.")
