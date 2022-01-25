@@ -113,10 +113,12 @@ class Music(commands.Cog):
                     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
                         search = VideosSearch(args, limit =1)
                         result = search.result()
-                        url = result['result'][0]['link']
-                        source = await discord.FFmpegOpusAudio.from_probe(url, **FFMPEG_OPTIONS)
+                        link = result['result'][0]['link']
+                        info = ydl.extract_info(link, download=False)
+                        url2 = info['formats'][0]['url']
+                        source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
                         voice.play(source)
-                        embed = discord.Embed(color=Config.botcolor(), title = f"Playing {url}.")
+                        embed = discord.Embed(color=Config.botcolor(), title = f"Playing {link}.")
                         await ctx.send(embed=embed,delete_after=5)
         else: 
             embed = discord.Embed(color=Config.botcolor(),title="Not connected to a voice channel.")
