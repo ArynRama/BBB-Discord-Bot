@@ -1,7 +1,8 @@
 import discord
+import youtube_dl
+from cogs.config import Config
 from discord.ext import commands
 from discord import FFmpegPCMAudio
-from cogs.config import Config
 
 queues = {}
 
@@ -79,15 +80,19 @@ class Music(commands.Cog):
         await ctx.send(embed = embed, delete_after=5)
 
     @commands.command(pass_context=True)
-    async def play(self, ctx, *, args):
+    async def play(self, ctx, *, url):
         """Plays music."""
         voice = ctx.guild.voice_client
-        name = args
-        song = "music/" + name + ".mp3"
-        source = FFmpegPCMAudio(song)
-        embed = discord.Embed(color=Config.botcolor(), title = f"Playing {args}.")
-        await ctx.send(embed=embed,delete_after=5)
-        voice.play(source)
+        YDL_OPTIONS = {'format':"bestaudio"}
+        FFMPEG_OPTIONS = {'beforeoptions': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
+
+        with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+            info = ydl.extract_info(url, download = False)
+            url2 = info['formats'][0]['url']
+            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            voice.play(source)
+            embed = discord.Embed(color=Config.botcolor(), title = f"Playing {url}.")
+            await ctx.send(embed=embed,delete_after=5)
 
     @commands.command(pass_context=True)
     async def queue(self, ctx, *, args):
