@@ -97,7 +97,7 @@ class Music(commands.Cog):
                 song = result['result'][0]['title']
                 img = result['result'][0]['thumbnails'][0]['url']
                 link = result['result'][0]['link']
-                if queue[ctx.guild.id] == {}:
+                if queue[ctx.guild.id] == []:
                     queue[ctx.guild.id] = link
                 else:
                     queue[ctx.guild.id].append(link)
@@ -128,7 +128,7 @@ class Music(commands.Cog):
     async def queue(self, ctx, *, args):
         """View the queue."""
         guild_id = ctx.message.guild.id
-        await ctx.send(queues[guild_id])
+        await ctx.send(queue[guild_id])
 
 
 def setup(client):
