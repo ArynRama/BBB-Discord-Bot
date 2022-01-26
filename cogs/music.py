@@ -7,15 +7,15 @@ from youtubesearchpython import VideosSearch
 queue = {}
 
 
+def check_queue(ctx):  
+    if str(id) in queue.keys():
+        sause = queue[str(ctx.guild.id)].pop(0)
+        source= sause['source']
+        ctx.guild.voice_client.play(source)
 class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    def check_queue(self, ctx):  
-        if str(id) in queue.keys():
-            sause = queue[str(ctx.guild.id)].pop(0)
-            source= sause['source']
-            ctx.guild.voice_client.play(source)
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -130,7 +130,7 @@ class Music(commands.Cog):
                     else:
                         queue[str(ctx.guild.id)].append({"title": title, "link": link, "source": source})
             else:
-                voice.play(source, after=lambda x=None: self.check_queue(ctx))
+                voice.play(source, after=lambda x=None: check_queue(ctx))
                 embed = discord.Embed(color=Config.botcolor(), title=f"Playing {title}.", description=link)
                 await ctx.send(embed=embed, delete_after=5)
         else:
@@ -155,7 +155,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=Config.botcolor(),title=f"Skipping.")
             voice = discord.utils.get(ctx.bot.voice_clients, guild = ctx.guild)
             voice.stop()
-            await self.check_queue(ctx)
+            check_queue(ctx)
             await ctx.send(embed=embed, delete_after=5)
         else:
             embed = discord.Embed(color=Config.botcolor(), title="You must be connected to a voice channel.")
