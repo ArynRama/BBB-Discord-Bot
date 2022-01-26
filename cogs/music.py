@@ -11,7 +11,7 @@ class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    def check_queue(ctx):  
+    def check_queue(self, ctx):  
         if str(id) in queue.keys():
             sause = queue[str(ctx.guild.id)].pop(0)
             source= sause['source']
