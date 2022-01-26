@@ -25,10 +25,6 @@ class Config(commands.Cog):
         version = Config.config['Bot']['Version']
         return version
 
-    def defaultprefix():
-        defaultprefix = Config.config['Chat']['CommandPrefix']
-        return defaultprefix
-
     def botcolor():
         botcolors = Config.config['Chat']['BotColor'].split(", ")
         r = botcolors[0]

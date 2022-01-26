@@ -7,37 +7,15 @@ from cogs.config import Config
 from discord.ext import commands
 from cryptography import fernet
 
-from cogs.help import Help
+from cogs.help import HelpCmd
 
 description = f'''{Config.desc()}'''
 intents = discord.Intents.all()
 tracemalloc.start()
 
 
-async def get_prefix(client, message):
-    prefixes = prefixeslist(message)
-    return commands.when_mentioned_or(*prefixes)(client, message)
-
-
-client = commands.Bot(command_prefix=get_prefix,
-                      description=description, intent=intents, help_command=Help.HelpCmd)
-
-def prefixeslist(message):
-    if isinstance(message.channel, discord.DMChannel):
-        return Config.defaultprefix()
-    else:
-        with open("json/prefixes.json", "r") as f:
-            prefixes = json.load(f)
-        guild = message.guild
-        id = guild.id
-        if str(id) in prefixes:
-            return prefixes[str(id)]
-        else:
-            prefixes[str(id)] = Config.defaultprefix()
-            with open("json/prefixes.json", "w") as f:
-                json.dump(prefixes, f)
-            return prefixes[str(id)]
-
+client = commands.Bot(command_prefix="-",
+                      description=description, intent=intents, help_command=HelpCmd())
 
 @client.event
 async def on_ready():
@@ -54,8 +32,7 @@ class LoadCogs:
     ]
     dependencies = [
         "config",
-        "event",
-        "help"
+        "event"
     ]
 
     loaded_ext = []
