@@ -116,15 +116,15 @@ class Music(commands.Cog):
 
                 if len(queue.keys()) == 0:
 
-                    queue[str(ctx.guild.id)] = [{"link": link, "source": source}]
+                    queue[str(ctx.guild.id)] = [{"title": title, "link": link, "source": source}]
                 else:
 
                     if queue[str(ctx.guild.id)][0] == {}:
 
-                        queue[str(ctx.guild.id)] = {"link": link, "source": source}
+                        queue[str(ctx.guild.id)] = {"title": title, "link": link, "source": source}
                     else:
 
-                        queue[str(ctx.guild.id)].append({"link": link, "source": source})
+                        queue[str(ctx.guild.id)].append({"title": title, "link": link, "source": source})
             else:
 
                 voice.play(source, after=lambda x=None: check_queue(ctx, str(ctx.message.guild.id)))
@@ -137,13 +137,13 @@ class Music(commands.Cog):
             await ctx.send(embed=embed,delete_after = 5)
 
     @commands.command(pass_context=True)
-    async def queue(self, ctx, *, args):
+    async def queue(self, ctx):
         """View the queue."""
         guild_id = str(ctx.message.guild.id)
         i = 1
         for a in queue[guild_id]:
             embed = discord.Embed(color=Config.botcolor(), title="Queue")
-            embed.add_field(name = i,value = a)
+            embed.add_field(name = f"#{i}",value = f"[{a['title']}]({a['link']})")
             i = i+1
         await ctx.send(embed=embed, delete_after= 30)
 
