@@ -118,7 +118,7 @@ class Music(commands.Cog):
                         link = args
                 url2 = info['formats'][0]['url']
                 source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-                voice.play(source, after=lambda x=None: check_queue(ctx, str(ctx.message.guild.id)))
+                voice.play(source, after=lambda x=None: await check_queue(ctx, str(ctx.message.guild.id)))
                 embed = discord.Embed(color=Config.botcolor(), title = f"Playing {song}.")
                 await ctx.send(embed=embed,delete_after=5)
         else: 
