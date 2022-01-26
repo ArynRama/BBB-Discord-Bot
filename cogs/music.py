@@ -6,7 +6,7 @@ from youtubesearchpython import VideosSearch
 
 queue = {}
 
-def check_queue(ctx, id):  
+async def check_queue(ctx, id):  
     if str(id) in queue.keys():
         link = queue[str(id)].pop()
         YDL_OPTIONS = {'format':"bestaudio"}
@@ -14,7 +14,7 @@ def check_queue(ctx, id):
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
             info = ydl.extract_info(link, download=False)
             url2 = info['formats'][0]['url']
-            source = discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
             ctx.guild.voice_client.play(source)
 
 class Music(commands.Cog):
@@ -76,10 +76,10 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def stop(self, ctx):
         """Stops the music."""
-        voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
-        await voice.pause()
         embed = discord.Embed(color=Config.botcolor(), title = "Stoping.")
         await ctx.send(embed = embed, delete_after=5)
+        voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
+        await voice.pause()
 
     @commands.command(pass_context=True)
     async def play(self, ctx, *, args):
