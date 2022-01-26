@@ -152,7 +152,7 @@ class Music(commands.Cog):
         """Skip this song."""
         if ctx.author.voice:
             embed = discord.Embed(color=Config.botcolor(),title=f"Skipping.")
-            voice = ctx.voice
+            voice = discord.utils.get(self.client.voice_client,guild = ctx.guild)
             voice.stop()
             await ctx.send(embed=embed, delete_after=5)
             await self.check_queue(ctx)
