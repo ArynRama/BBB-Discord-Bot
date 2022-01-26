@@ -25,7 +25,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author != self.client.user:
-            prefixes = await main.get_prefix(self.client, message)
+            prefixes = await main.get_prefix(message)
             for prefix in prefixes:
                 if message.content.startswith(prefix):
                     try:
