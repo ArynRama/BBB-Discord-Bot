@@ -116,7 +116,7 @@ class Music(commands.Cog):
 
                 if len(queue.keys()) == 0:
 
-                    queue[str(ctx.guild.id)] = {"link": link, "source": source}
+                    queue[str(ctx.guild.id)] = [{"link": link, "source": source}]
                 else:
 
                     if queue[str(ctx.guild.id)][0] == {}:
