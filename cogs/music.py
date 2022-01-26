@@ -95,7 +95,8 @@ class Music(commands.Cog):
         """Plays music."""
            
         if ctx.author.voice:
-            if ctx.guild.voice == None:
+            voice_client = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
+            if not(voice_client.is_connected()):
                 channel = ctx.message.author.voice.channel
                 voice = await channel.connect()
                 embed = discord.Embed(color=Config.botcolor(), title=f"Joining {channel.name}")
