@@ -52,7 +52,8 @@ async def on_ready():
 
 class LoadCogs:
     extentions = [
-        "music"
+        "music",
+        "mischief"
     ]
     dependencies = [
         "config",
