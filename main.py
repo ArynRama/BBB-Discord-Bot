@@ -12,16 +12,20 @@ intents = discord.Intents.all()
 tracemalloc.start()
 
 
-async def get_prefix(client, message):
-    prefixes = prefixeslist(client, message)
+async def get_prefix(message):
+    prefixes = prefixeslist(message)
     return commands.when_mentioned_or(*prefixes)(client, message)
 
 
 client = commands.Bot(command_prefix=get_prefix,
                       description=description, intent=intents)
 
+@client.after_invoke()
+async def on_message(message):
+    if message.startswith(get_prefix(message)):
+        await message.delete()
 
-def prefixeslist(client, message):
+def prefixeslist(message):
     if isinstance(message.channel, discord.DMChannel):
         return Config.defaultprefix()
     else:
@@ -51,7 +55,8 @@ class LoadCogs:
         "music"
     ]
     dependencies = [
-        "config"
+        "config",
+        "event"
     ]
 
     loaded_ext = []
