@@ -6,9 +6,9 @@ from youtubesearchpython import VideosSearch
 
 queue = {}
 
-def check_queue(ctx, id):  
+def check_queue(ctx):  
     if str(id) in queue.keys():
-        sause = queue[str(id)].pop(0)
+        sause = queue[str(ctx.guild.id)].pop(0)
         source= sause['source']
         ctx.guild.voice_client.play(source)
 
@@ -127,7 +127,7 @@ class Music(commands.Cog):
                         queue[str(ctx.guild.id)].append({"title": title, "link": link, "source": source})
             else:
 
-                voice.play(source, after=lambda x=None: check_queue(ctx, str(ctx.message.guild.id)))
+                voice.play(source, after=lambda x=None: check_queue(ctx))
                 embed = discord.Embed(color=Config.botcolor(), title=f"Playing {title}.")
                 await ctx.send(embed=embed, delete_after=5)
 
@@ -146,7 +146,14 @@ class Music(commands.Cog):
             embed.add_field(name = f"#{i}",value = f"[{a['title']}]({a['link']})")
             i = i+1
         await ctx.send(embed=embed, delete_after= 30)
-
+    
+    @commands.command(pass_context=True)
+    async def skip(self, ctx):
+        """Skip this song."""
+        voice = ctx.voice
+        voice.stop()
+        await self.check_queue(ctx)
+        
 
 def setup(client):
     client.add_cog(Music(client))
