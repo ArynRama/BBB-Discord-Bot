@@ -75,6 +75,7 @@ class Music(commands.Cog):
         if voice.is_playing() or voice.is_paused():
             embed = discord.Embed(color=Config.botcolor(), title = "Stoping.")
             await ctx.send(embed = embed, delete_after=5)
+            queue[str(ctx.guild.id)] = {}
             await voice.pause()
         else:
             embed = discord.Embed(color=Config.botcolor(), title = "Not playing anything")
