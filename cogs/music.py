@@ -8,7 +8,7 @@ queue = {}
 
 def check_queue(ctx, id):  
     if str(id) in queue.keys():
-        link = queue[str(id)].pop(0)
+        link = queue[str(id)].pop()
         YDL_OPTIONS = {'format':"bestaudio"}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
@@ -129,7 +129,12 @@ class Music(commands.Cog):
     async def queue(self, ctx, *, args):
         """View the queue."""
         guild_id = str(ctx.message.guild.id)
-        await ctx.send(queue[guild_id])
+        i = 1
+        for a in queue[guild_id]:
+            embed = discord.Embed(color=Config.botcolor(), title="Queue")
+            embed.add_field(name = i,value = a)
+            i = i+1
+        await ctx.send(embed=embed, delete_after= 30)
 
 
 def setup(client):
