@@ -154,7 +154,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=Config.botcolor(),title=f"Skipping.")
             voice = discord.utils.get(ctx.bot.voice_clients, guild = ctx.guild)
             voice.stop()
-            await check_queue(ctx)
+            check_queue(ctx)
             await ctx.send(embed=embed, delete_after=5)
         else:
             embed = discord.Embed(color=Config.botcolor(), title="You must be connected to a voice channel.")
