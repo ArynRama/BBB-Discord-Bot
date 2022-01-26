@@ -8,7 +8,7 @@ queue = {}
 
 def check_queue(ctx, id):  
     if str(id) in queue.keys():
-        sause = queue[str(id)].pop()
+        sause = queue[str(id)].pop(0)
         source= sause['source']
         ctx.guild.voice_client.play(source)
 
@@ -76,7 +76,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=Config.botcolor(), title = "Stoping.")
             await ctx.send(embed = embed, delete_after=5)
             queue[str(ctx.guild.id)] = {}
-            await voice.pause()
+            await voice.stop()
         else:
             embed = discord.Embed(color=Config.botcolor(), title = "Not playing anything")
             await ctx.send(embed = embed, delete_after=5)
