@@ -37,4 +37,4 @@ class Events(commands.Cog):
                         raise commands.BotMissingPermissions("DeleteMessages")
 
 def setup(client):
-    client.add_cog(Events)
+    client.add_cog(Events(client))
