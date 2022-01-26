@@ -7,6 +7,8 @@ from cogs.config import Config
 from discord.ext import commands
 from cryptography import fernet
 
+from cogs.help import Help
+
 description = f'''{Config.desc()}'''
 intents = discord.Intents.all()
 tracemalloc.start()
@@ -18,7 +20,7 @@ async def get_prefix(client, message):
 
 
 client = commands.Bot(command_prefix=get_prefix,
-                      description=description, intent=intents)
+                      description=description, intent=intents, help_command=Help.HelpCmd)
 
 def prefixeslist(message):
     if isinstance(message.channel, discord.DMChannel):
