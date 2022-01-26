@@ -144,7 +144,7 @@ class Music(commands.Cog):
         i = 1
         embed = discord.Embed(color=Config.botcolor(), title="Queue")
         for a in queue[guild_id]:
-            embed.add_field(name = f"#{i}",value = f"[{a['title']}]({a['link']})")
+            embed.add_field(name = f"#{i}",value = f"[{a['title']}]({a['link']})", inline=False)
             i = i+1
         await ctx.send(embed=embed, delete_after= 30)
     
