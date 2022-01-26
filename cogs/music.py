@@ -6,7 +6,7 @@ from youtubesearchpython import VideosSearch
 
 queue = {}
 
-async def check_queue(ctx, id):  
+def check_queue(ctx, id):  
     if str(id) in queue.keys():
         sause = queue[str(id)].pop()
         source= sause['source']
