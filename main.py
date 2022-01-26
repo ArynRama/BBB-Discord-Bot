@@ -12,7 +12,7 @@ intents = discord.Intents.all()
 tracemalloc.start()
 
 
-async def get_prefix(message):
+async def get_prefix(client, message):
     prefixes = prefixeslist(message)
     return commands.when_mentioned_or(*prefixes)(client, message)
 
