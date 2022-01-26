@@ -9,15 +9,15 @@ from youtubesearchpython import VideosSearch
 queue = {}
 
 def check_queue(ctx, id):  
-    if queue[id] != []:
-        link = queue[id].pop(0)
+    if queue[str(id)] != []:
+        link = queue[str(id)].pop(0)
         YDL_OPTIONS = {'format':"bestaudio"}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
             info = ydl.extract_info(link, download=False)
             url2 = info['formats'][0]['url']
             source = discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-            ctx.guild.voice_client.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
+            ctx.guild.voice_client.play(source, after=lambda x=None: check_queue(ctx, str(tx.message.guild.id)))
 
 class Music(commands.Cog):
     def __init__(self, client):
@@ -97,10 +97,10 @@ class Music(commands.Cog):
                 song = result['result'][0]['title']
                 img = result['result'][0]['thumbnails'][0]['url']
                 link = result['result'][0]['link']
-                if queue[ctx.guild.id] == []:
-                    queue[ctx.guild.id] = link
+                if queue[str(ctx.guild.id)] == []:
+                    queue[str(ctx.guild.id)] = link
                 else:
-                    queue[ctx.guild.id].append(link)
+                    queue[str(ctx.guild.id)].append(link)
             else:
                 YDL_OPTIONS = {'format':"bestaudio"}
                 FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
@@ -118,16 +118,17 @@ class Music(commands.Cog):
                         link = args
                 url2 = info['formats'][0]['url']
                 source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-                voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
+                voice.play(source, after=lambda x=None: check_queue(ctx, str(ctx.message.guild.id)))
                 embed = discord.Embed(color=Config.botcolor(), title = f"Playing {song}.")
                 await ctx.send(embed=embed,delete_after=5)
         else: 
             embed = discord.Embed(color=Config.botcolor(),title="Not connected to a voice channel.")
             await ctx.send(embed=embed,delete_after = 5)
+
     @commands.command(pass_context=True)
     async def queue(self, ctx, *, args):
         """View the queue."""
-        guild_id = ctx.message.guild.id
+        guild_id = str(ctx.message.guild.id)
         await ctx.send(queue[guild_id])
 
 
