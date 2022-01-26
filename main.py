@@ -20,11 +20,6 @@ async def get_prefix(message):
 client = commands.Bot(command_prefix=get_prefix,
                       description=description, intent=intents)
 
-@client.after_invoke()
-async def on_message(message):
-    if message.startswith(get_prefix(message)):
-        await message.delete()
-
 def prefixeslist(message):
     if isinstance(message.channel, discord.DMChannel):
         return Config.defaultprefix()
