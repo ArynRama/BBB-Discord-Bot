@@ -111,7 +111,7 @@ class Music(commands.Cog):
 
             if voice.is_playing():
 
-                embed = discord.Embed(color=Config.botcolor(), title="Added to queue.")
+                embed = discord.Embed(color=Config.botcolor(), title=f"Added {title} queue.", description = link)
                 await ctx.send(embed=embed, delete_after=5)
 
                 if len(queue.keys()) == 0:
@@ -119,7 +119,7 @@ class Music(commands.Cog):
                     queue[str(ctx.guild.id)] = [{"title": title, "link": link, "source": source}]
                 else:
 
-                    if queue[str(ctx.guild.id)][0] == {}:
+                    if queue[str(ctx.guild.id)] == []:
 
                         queue[str(ctx.guild.id)] = {"title": title, "link": link, "source": source}
                     else:
@@ -141,8 +141,8 @@ class Music(commands.Cog):
         """View the queue."""
         guild_id = str(ctx.message.guild.id)
         i = 1
+        embed = discord.Embed(color=Config.botcolor(), title="Queue")
         for a in queue[guild_id]:
-            embed = discord.Embed(color=Config.botcolor(), title="Queue")
             embed.add_field(name = f"#{i}",value = f"[{a['title']}]({a['link']})")
             i = i+1
         await ctx.send(embed=embed, delete_after= 30)
