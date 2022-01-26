@@ -132,7 +132,7 @@ class Music(commands.Cog):
                     else:
                         queue[str(ctx.guild.id)].append({"title": title, "link": link, "source": source})
             else:
-                voice.play(source, after=lambda x=None: await self.check_queue(ctx))
+                voice.play(source, after=lambda x=None: (await self.check_queue(ctx) for _ in '_').__anext__())
                 embed = discord.Embed(color=Config.botcolor(), title=f"Playing {title}.", description=link)
                 await ctx.send(embed=embed, delete_after=5)
         else:
