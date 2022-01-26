@@ -1,15 +1,13 @@
-import json
 import discord
 import youtube_dl
 from cogs.config import Config
 from discord.ext import commands
-from discord import FFmpegPCMAudio
 from youtubesearchpython import VideosSearch
 
 queue = {}
 
 def check_queue(ctx, id):  
-    if queue[str(id)] != []:
+    if str(id) in queue.keys():
         link = queue[str(id)].pop(0)
         YDL_OPTIONS = {'format':"bestaudio"}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
@@ -17,7 +15,7 @@ def check_queue(ctx, id):
             info = ydl.extract_info(link, download=False)
             url2 = info['formats'][0]['url']
             source = discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-            ctx.guild.voice_client.play(source, after=lambda x=None: check_queue(ctx, str(tx.message.guild.id)))
+            ctx.guild.voice_client.play(source)
 
 class Music(commands.Cog):
     def __init__(self, client):
@@ -89,18 +87,20 @@ class Music(commands.Cog):
         voice = ctx.guild.voice_client
         if voice.is_connected():
             if voice.is_playing():
-                embed = discord.Embed(
-                    color=Config.botcolor(), title="Added to queue.")
+                embed = discord.Embed(color=Config.botcolor(), title="Added to queue.")
                 await ctx.send(embed=embed,delete_after=5)
                 search = VideosSearch(args, limit=1)
                 result = search.result()
                 song = result['result'][0]['title']
                 img = result['result'][0]['thumbnails'][0]['url']
                 link = result['result'][0]['link']
-                if queue[str(ctx.guild.id)] == []:
-                    queue[str(ctx.guild.id)] = link
+                if len(queue.keys())==0:
+                    queue[str(ctx.guild.id)] = {link}
                 else:
-                    queue[str(ctx.guild.id)].append(link)
+                    if queue[str(ctx.guild.id)] == {}:
+                        queue[str(ctx.guild.id)] = {link}
+                    else:
+                        queue[str(ctx.guild.id)].add(link)
             else:
                 YDL_OPTIONS = {'format':"bestaudio"}
                 FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
