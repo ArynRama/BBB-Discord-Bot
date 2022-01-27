@@ -127,12 +127,13 @@ class Music(commands.Cog):
                 if len(queue.keys()) == 0:
                     queue[str(ctx.guild.id)] = [{"title": title, "link": link, "source": source}]
                 else:
-                    if queue[str(ctx.guild.id)] == []:
-                        queue[str(ctx.guild.id)] = {"title": title, "link": link, "source": source}
-                    else:
+                    if len(queue[str(ctx.guild.id)]) >= 1:
                         queue[str(ctx.guild.id)].append({"title": title, "link": link, "source": source})
+                    elif queue[str(ctx.guild.id)] == [] or queue[str(ctx.guild.id)] == {}:
+                        queue[str(ctx.guild.id)] = {"title": title, "link": link, "source": source} 
             else:
-                voice.play(source, after=lambda x=None: (await self.check_queue(ctx) for _ in '_').__anext__())
+                voice.play(source, after=lambda x=None: (await self.check_queue(ctx
+                ) for _ in '_').__anext__())
                 embed = discord.Embed(color=Config.botcolor(), title=f"Playing {title}.", description=link)
                 await ctx.send(embed=embed, delete_after=5)
         else:
