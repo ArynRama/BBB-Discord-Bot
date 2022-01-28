@@ -11,19 +11,19 @@ class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    async def check_queue(self, ctx):  
+    def check_queue(self, ctx):  
         if str(id) in queue.keys():
             sause = queue[str(ctx.guild.id)].pop(0)
             link= sause['link']
             YDL_OPTIONS = {'format': "bestaudio"}
             FFMPEG_OPTIONS = {
-                'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+                   'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn, -i'}
             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
                 info = ydl.extract_info(link, download=False)
             url2 = info['formats'][0]['url']
-            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            source = discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
             ctx.guild.voice_client.play(source)
-
+            
     @commands.Cog.listener()
     async def on_ready(self):
         print("Music has been loaded.")
@@ -139,8 +139,7 @@ class Music(commands.Cog):
                     elif queue[str(ctx.guild.id)] == [] or queue[str(ctx.guild.id)] == {}:
                         queue[str(ctx.guild.id)] = [{"title": title, "link": link}] 
             else:
-                voice.play(source, after=lambda x=None: (await self.check_queue(ctx
-                ) for _ in '_').__anext__())
+                voice.play(source, after=lambda x=None: self.check_queue(ctx))
                 embed = discord.Embed(color=Config.botcolor(), title=f"Playing {title}.", description=link)
                 await ctx.send(embed=embed, delete_after=5)
         else:
