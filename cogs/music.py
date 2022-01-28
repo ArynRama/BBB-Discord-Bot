@@ -14,14 +14,7 @@ class Music(commands.Cog):
     def check_queue(self, ctx):  
         if str(id) in queue.keys():
             sause = queue[str(ctx.guild.id)].pop(0)
-            link= sause['link']
-            YDL_OPTIONS = {'format': "bestaudio"}
-            FFMPEG_OPTIONS = {
-                   'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn, -i'}
-            with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-                info = ydl.extract_info(link, download=False)
-            url2 = info['formats'][0]['url']
-            source = discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            source = sause['source']
             ctx.guild.voice_client.play(source)
             
     @commands.Cog.listener()
@@ -88,7 +81,7 @@ class Music(commands.Cog):
             if voice.is_playing() or voice.is_paused():
                 embed = discord.Embed(color=Config.botcolor(), title = "Stoping.")
                 await ctx.send(embed = embed, delete_after=5)
-                queue[str(ctx.guild.id)] = {}
+                queue[str(ctx.guild.id)] = [{}]
                 await voice.stop()
             else:
                 embed = discord.Embed(color=Config.botcolor(), title = "Not playing anything")
@@ -132,12 +125,12 @@ class Music(commands.Cog):
                 embed = discord.Embed(color=Config.botcolor(), title=f"Added {title} queue.", description = link)
                 await ctx.send(embed=embed, delete_after=5)
                 if len(queue.keys()) == 0:
-                    queue[str(ctx.guild.id)] = [{"title": title, "link": link}]
+                    queue[str(ctx.guild.id)] = [{"title": title, "link": link, "source": source}]
                 else:
                     if len(queue[str(ctx.guild.id)]) >= 1:
-                        queue[str(ctx.guild.id)].append({"title": title, "link": link})
+                        queue[str(ctx.guild.id)].append({"title": title, "link": link, "source": source})
                     elif queue[str(ctx.guild.id)] == [] or queue[str(ctx.guild.id)] == {}:
-                        queue[str(ctx.guild.id)] = [{"title": title, "link": link}] 
+                        queue[str(ctx.guild.id)] = [{"title": title, "link": link, "source": source}] 
             else:
                 voice.play(source, after=lambda x=None: self.check_queue(ctx))
                 embed = discord.Embed(color=Config.botcolor(), title=f"Playing {title}.", description=link)
@@ -164,7 +157,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=Config.botcolor(),title=f"Skipping.")
             voice = discord.utils.get(ctx.bot.voice_clients, guild = ctx.guild)
             await ctx.send(embed=embed, delete_after=5)
-            await self.check_queue(ctx)
+            self.check_queue(ctx)
         else:
             embed = discord.Embed(color=Config.botcolor(), title="You must be connected to a voice channel.")
             await ctx.send(embed=embed, delete_after=5)
