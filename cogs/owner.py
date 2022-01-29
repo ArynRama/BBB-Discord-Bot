@@ -8,13 +8,13 @@ class Owner(commands.Cog):
     @commands.command()
     async def disable(self, name):
         for a in self.client.commands:
-            if name in a.qualified_name:
+            if name == a.qualified_name:
                 a.update(enable=False)
     
     @commands.command()
     async def enable(self, name):
         for a in self.client.commands:
-            if name in a.qualified_name:
+            if name == a.qualified_name:
                 a.update(enable=True)
         
 def setup(client):
