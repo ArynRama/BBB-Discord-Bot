@@ -32,7 +32,8 @@ class LoadCogs:
     ]
     dependencies = [
         "config",
-        "event"
+        "event",
+        "owner"
     ]
 
     loaded_ext = []
