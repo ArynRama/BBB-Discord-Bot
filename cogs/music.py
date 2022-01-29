@@ -6,16 +6,16 @@ from youtubesearchpython import VideosSearch
 
 queue = {}
 
+def check_queue(self, ctx):  
+    if str(id) in queue.keys():
+        sause = queue[str(ctx.guild.id)].pop(0)
+        source = sause['source']
+        ctx.guild.voice_client.play(source)
 
 class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    def check_queue(self, ctx):  
-        if str(id) in queue.keys():
-            sause = queue[str(ctx.guild.id)].pop(0)
-            source = sause['source']
-            ctx.guild.voice_client.play(source)
             
     @commands.Cog.listener()
     async def on_ready(self):
@@ -132,7 +132,7 @@ class Music(commands.Cog):
                     elif queue[str(ctx.guild.id)] == [] or queue[str(ctx.guild.id)] == {}:
                         queue[str(ctx.guild.id)] = [{"title": title, "link": link, "source": source}] 
             else:
-                voice.play(source, after=lambda x=None: self.check_queue(ctx))
+                voice.play(source, after=lambda x=None: check_queue(ctx))
                 embed = discord.Embed(color=Config.botcolor(), title=f"Playing {title}.", description=link)
                 await ctx.send(embed=embed, delete_after=5)
         else:
@@ -161,7 +161,6 @@ class Music(commands.Cog):
         else:
             embed = discord.Embed(color=Config.botcolor(), title="You must be connected to a voice channel.")
             await ctx.send(embed=embed, delete_after=5)
-        
 
 def setup(client):
     client.add_cog(Music(client))
