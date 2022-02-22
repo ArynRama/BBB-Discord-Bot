@@ -26,6 +26,14 @@ client = clients(command_prefix="-",description=description, intent=intents, hel
 async def get_guild_count(data):
     return len(client.guilds)
 
+
+@client.ipc.route()
+async def get_guild_id(data):
+    final = []
+    for guild in client.guilds:
+        final.append(guild.id)
+    return final
+
 @client.event
 async def on_ready():
     version = Config.version()
