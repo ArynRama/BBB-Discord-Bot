@@ -90,5 +90,4 @@ token = f.decrypt(b'gAAAAABh6y79OsMwg1rtFVcMSf5pCANhUvQXp1P6IF0Ae2NI3QrVzR0uD2Ub
 token = str(token).split("'")
 
 client.ipc.start()
-print(client.ipc.host)
 client.run(token[1])

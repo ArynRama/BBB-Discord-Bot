@@ -1,6 +1,6 @@
 import json
 import discord
-import main
+import Bot.main as main
 from cogs.config import Config
 from discord.ext import commands
 
