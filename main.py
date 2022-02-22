@@ -19,6 +19,22 @@ class clients(commands.Bot):
 
         self.ipc = ipc.Server(self,secret_key="ArynRama25")
     
+    async def on_ready(self):
+        """Called upon the READY event"""
+        version = Config.version()
+        print(f'Logged in as {client.user} (ID: {client.user.id})')
+        print(f'Bot Version: {version}')
+        print('Owner: ArynRama#6043')
+        print('------')
+
+    async def on_ipc_ready(self):
+        """Called upon the IPC Server being ready"""
+        print("Ipc server is ready.")
+
+    async def on_ipc_error(self, endpoint, error):
+        """Called upon an error being raised within an IPC route"""
+        print(endpoint, "raised", error)
+    
 
 client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
 
@@ -34,13 +50,7 @@ async def get_guild_id(data):
         final.append(guild.id)
     return final
 
-@client.event
-async def on_ready():
-    version = Config.version()
-    print(f'Logged in as {client.user} (ID: {client.user.id})')
-    print(f'Bot Version: {version}')
-    print('Owner: ArynRama#6043')
-    print('------')
+
 class LoadCogs:
     extentions = [
         "music",
