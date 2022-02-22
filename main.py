@@ -12,15 +12,13 @@ from cogs.help import HelpCmd
 description = f'''{Config.desc()}'''
 intents = discord.Intents.all()
 tracemalloc.start()
-
 class clients(commands.Bot):
+    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.ipc = ipc.Server(self,secret_key = "ArynRama25")
 
-        self.ipc = ipc.Server(self,secret_key="ArynRama25")
-    
     async def on_ready(self):
-        """Called upon the READY event"""
         version = Config.version()
         print(f'Logged in as {client.user} (ID: {client.user.id})')
         print(f'Bot Version: {version}')
@@ -28,11 +26,9 @@ class clients(commands.Bot):
         print('------')
 
     async def on_ipc_ready(self):
-        """Called upon the IPC Server being ready"""
         print("Ipc server is ready.")
-
+    
     async def on_ipc_error(self, endpoint, error):
-        """Called upon an error being raised within an IPC route"""
         print(endpoint, "raised", error)
     
 
