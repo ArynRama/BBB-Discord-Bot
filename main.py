@@ -89,5 +89,5 @@ f = fernet.Fernet(b'SuudQtosDgtTDsGzfyOTArsB5nNcMouR80sSMevMFNg=')
 token = f.decrypt(b'gAAAAABh6y79OsMwg1rtFVcMSf5pCANhUvQXp1P6IF0Ae2NI3QrVzR0uD2Ub7T21-bDwtccLILrPKvzmm_GcSVZ92--_FSScDyEBgXukwVXzIHRHvEov9PRqSoAYisWGMcP3N7syiYNaA3NuEjeyCn_VfQ25wEFU7g==')
 token = str(token).split("'")
 
-client.ipc.start
+client.ipc.start()
 client.run(token[1])
