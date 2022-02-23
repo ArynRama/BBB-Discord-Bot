@@ -72,4 +72,4 @@ async def dashboard_server(guild_id):
 
 
 if __name__ == "__main__":
-	app.run(host="127.0.0.1", port = os.environ.get("PORT"))
+	app.run(port = os.environ.get("PORT"))
