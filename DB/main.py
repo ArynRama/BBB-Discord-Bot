@@ -8,7 +8,7 @@ from cryptography import fernet
 
 from cogs.help import HelpCmd
 
-description = f'''{Config.desc()}'''
+description = f'''A bot I made for BBB.'''
 intents = discord.Intents.all()
 tracemalloc.start()
 class clients(commands.Bot):
