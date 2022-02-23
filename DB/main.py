@@ -11,7 +11,7 @@ from cogs.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
 version = "2.0.0beta"
-port = os.environ.get("PORT") if os.environ.get("PORT") else "5000"
+port = os.environ.get("PORT")
 intents = discord.Intents.all()
 tracemalloc.start()
 class clients(commands.Bot):
