@@ -11,14 +11,13 @@ from cogs.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
 version = "2.0.0beta"
-port = os.environ.get("PORT")
 intents = discord.Intents.all()
 tracemalloc.start()
 class clients(commands.Bot):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.ipc = ipc.Server(self,secret_key = "ArynRama25", port = port)
+        self.ipc = ipc.Server(self,secret_key = "ArynRama25")
 
     async def on_ready(self):
         print(f'Logged in as {client.user} (ID: {client.user.id})')
