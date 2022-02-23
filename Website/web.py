@@ -1,9 +1,11 @@
+import os
+from select import POLLRDHUP
 from quart import Quart, render_template, redirect, url_for
 from quart_discord import DiscordOAuth2Session
 from discord.ext import ipc
 
 app = Quart(__name__)
-ipc_client = ipc.Client(secret_key="ArynRama25")
+ipc_client = ipc.Client(secret_key="ArynRama25",port=os.environ.get("PORT"))
 
 app.config["SECRET_KEY"] = "aryn123"
 app.config["DISCORD_CLIENT_ID"] = 656362368250544128   # Discord client ID.
