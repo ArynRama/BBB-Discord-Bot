@@ -9,6 +9,7 @@ from cryptography import fernet
 from cogs.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
+version = "2.0.0beta"
 intents = discord.Intents.all()
 tracemalloc.start()
 class clients(commands.Bot):
@@ -18,7 +19,6 @@ class clients(commands.Bot):
         self.ipc = ipc.Server(self,secret_key = "ArynRama25")
 
     async def on_ready(self):
-        version = Config.version()
         print(f'Logged in as {client.user} (ID: {client.user.id})')
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
