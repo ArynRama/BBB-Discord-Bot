@@ -4,7 +4,7 @@ from quart import Quart, render_template, redirect, url_for
 from quart_discord import DiscordOAuth2Session
 from discord.ext import ipc
 
-app = Quart(__name__, host_matching=True)
+app = Quart(__name__)
 ipc_client = ipc.Client(secret_key="ArynRama25")
 
 app.config["SECRET_KEY"] = "aryn123"
