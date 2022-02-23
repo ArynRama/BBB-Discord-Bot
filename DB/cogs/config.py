@@ -13,28 +13,15 @@ class Config(commands.Cog):
     config = ConfigParser()
     config.read("options.ini")
 
-    def desc():
-        desc = Config.config['Bot']['Description']
-        return desc
-
-    def token():
-        token = Config.config['Bot']['Token']
-        return token
-
-    def version():
-        version = Config.config['Bot']['Version']
-        return version
-
     def botcolor():
-        botcolors = Config.config['Chat']['BotColor'].split(", ")
-        r = botcolors[0]
-        g = botcolors[1]
-        b = botcolors[2]
+        r = 0
+        g = 152
+        b = 252
         botcolor = Color.from_rgb(int(r), int(g), int(b))
         return botcolor
 
     async def devs():
-        devs = Config.config['Permissions']['DevIDs'].split(", ")
+        devs = []
         return devs
 
     def cog_check(self, ctx):
