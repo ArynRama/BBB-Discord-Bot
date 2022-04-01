@@ -4,8 +4,8 @@ import tracemalloc
 
 from discord import client
 from cogs.config import Config
-from discord.ext import commands, ipc
-from cryptography import fernet
+from discord.ext import commands
+import dotenv
 
 from cogs.help import HelpCmd
 
@@ -13,39 +13,20 @@ description = f'''A bot I made for BBB.'''
 version = "2.0.0beta"
 intents = discord.Intents.all()
 tracemalloc.start()
+dotenv.load_dotenv()
 class clients(commands.Bot):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.ipc = ipc.Server(self,secret_key = "ArynRama25")
 
     async def on_ready(self):
         print(f'Logged in as {client.user} (ID: {client.user.id})')
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
         print('------')
-
-    async def on_ipc_ready(self):
-        print("Ipc server is ready.")
-    
-    async def on_ipc_error(self, endpoint, error):
-        print(endpoint, "raised", error)
     
 
 client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
-
-@client.ipc.route()
-async def get_guild_count(data):
-    return len(client.guilds)
-
-
-@client.ipc.route()
-async def get_guild_id(data):
-    final = []
-    for guild in client.guilds:
-        final.append(guild.id)
-    return final
-
 
 class LoadCogs:
     extentions = [
@@ -85,9 +66,4 @@ class LoadCogs:
                 ext, exc))
     print("------")
 
-f = fernet.Fernet(b'SuudQtosDgtTDsGzfyOTArsB5nNcMouR80sSMevMFNg=')
-token = f.decrypt(b'gAAAAABh6y79OsMwg1rtFVcMSf5pCANhUvQXp1P6IF0Ae2NI3QrVzR0uD2Ub7T21-bDwtccLILrPKvzmm_GcSVZ92--_FSScDyEBgXukwVXzIHRHvEov9PRqSoAYisWGMcP3N7syiYNaA3NuEjeyCn_VfQ25wEFU7g==')
-token = str(token).split("'")
-
-client.ipc.start()
-client.run(token[1])
+client.run(os.getenv("token"))
