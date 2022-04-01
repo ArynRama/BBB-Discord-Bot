@@ -2,7 +2,7 @@ import discord
 from cogs.config import Config
 from discord.ext import commands
 
-hidden_cogs = ('Dev','Config','Events')
+hidden_cogs = ('Config','Events')
 class HelpCmd(commands.HelpCommand):
     def __init__(self):
         super().__init__()
