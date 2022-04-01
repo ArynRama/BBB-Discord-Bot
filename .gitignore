@@ -2,3 +2,4 @@ test.py
 test.json
 DB/.env
 .venv
+__pycache__

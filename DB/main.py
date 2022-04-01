@@ -27,7 +27,6 @@ class clients(commands.Bot):
     
 
 client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
-
 class LoadCogs:
     extentions = [
         "music",
@@ -36,7 +35,7 @@ class LoadCogs:
     dependencies = [
         "config",
         "event",
-        "owner"
+        "dev"
     ]
 
     loaded_ext = []
@@ -54,7 +53,6 @@ class LoadCogs:
 
     print("------")
     print("Loading extensions...")
-
     for ext in extentions:
         try:
 
