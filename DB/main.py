@@ -24,7 +24,6 @@ class clients(commands.Bot):
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
         print('------')
-    
 
 client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
 class LoadCogs:
@@ -63,5 +62,4 @@ class LoadCogs:
             print('Failed to load extension {}\n{}'.format(
                 ext, exc))
     print("------")
-
-client.run(os.getenv("token"))
+client.run(str(os.getenv("token")))

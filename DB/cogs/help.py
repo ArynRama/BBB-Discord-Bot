@@ -12,6 +12,7 @@ class HelpCmd(commands.HelpCommand):
         channel = self.get_destination()
         coglist = sorted(
             [cog.qualified_name for cog in mapping if cog.qualified_name not in hidden_cogs])
+        coglist = await self.filter_commands(coglist)
         description = f'**Prefix is `-`**\nThere are {len(coglist)} modules'
         lines = '\n'.join(coglist)
         cogs = f"```prolog\n{lines}```"

@@ -7,62 +7,69 @@ from cogs.config import Config
 class Dev(commands.Cog):
     def __init__(self, client):
         self.client = client
-
-    @commands.command()
-    async def disable(self, name):
-        for a in self.client.commands:
-            if name == a.qualified_name:
-                a.update(enable=False)
     
-    @commands.command()
-    async def enable(self, name):
-        for a in self.client.commands:
-            if name == a.qualified_name:
-                a.update(enable=True)
-    
-    @commands.group(name="cog")
-    async def cogs(self, ctx, arg):
-        if ctx.invoked_subcommand is None:
-            embed=discord.Embed(title="Incomplete command passed.", color=Config.botcolor())
-            await ctx.send('Invalid git command passed...')
+    async def cog_check(self, ctx):
+        if str(ctx.author.id) in Config.devs():
+            return True
+        else:
+            return False
 
-    @cogs.command(alias=["activate", "a", "e"])
+    @commands.command(aliases=["shutdown", "logout"])
+    async def disconnect(self, ctx):
+        """Shutsdown the bot."""
+        embed = discord.Embed(
+            title="Bot is disconnecting.", color=Config.botcolor())
+        await ctx.send(embed=embed, delete_after=5)
+        await self.client.change_presence(status=discord.Status.offline)
+        await self.client.close()
+    
+    @commands.group(invoke_without_command=True, name="cog")
+    async def cogs(self, ctx):
+            embed=discord.Embed(title="Cogs", color=Config.botcolor())
+            command = f"```prolog\nEnable\nUnload\nReload```"
+            embed.add_field(name="Sub-Commands", value=command)
+            await ctx.send(embed=embed, delete_after=5)
+
+    @cogs.command(aliases=["activate", "a", "e","load","l"])
     async def enable(self, ctx, args: str):
         mypath="./DB/cogs"
         cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
-        cog = args.lower()+".py"
-        if cog in cogs:
+        cog = "cogs."+args.lower()
+        check = args.lower() + ".py"
+        if check in cogs:
             self.client.add_cog(cog)
             embed = discord.Embed(title=f"Loaded {args.lower()}.", color=Config.botcolor())
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, delete_after=5)
         else:
             embed = discord.Embed(
                 title=f"{args.title()} is not a valid cog.", color=Config.botcolor())
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, delete_after=5)
 
-    @cogs.command(alias=["deactivate","d","u"])
+    @cogs.command(aliases=["deactivate","d","u","disable"])
     async def unload(self,ctx,args: str):
         mypath = "./DB/cogs"
         cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
-        cog = args.lower()+".py"
-        if cog in cogs:
-            self.client.remove_cog(cog)
+        check = args.lower() + ".py"
+        cog = "cogs."+args.lower()
+        if check in cogs:
+            self.client.unload_extension(cog)
             embed = discord.Embed(
                 title=f"Unloaded {args.lower()}.", color=Config.botcolor())
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, delete_after=5)
         else:
             embed = discord.Embed(
                 title=f"{args.title()} is not a valid cog.", color=Config.botcolor())
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, delete_after=5)
     
-    @cogs.command(alias=["reactivate","r"])
+    @cogs.command(aliases=["reactivate","r","reenable"])
     async def reload(self,ctx,args: str):
         mypath = "./DB/cogs"
         cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
-        cog = args.lower()+".py"
-        if cog in cogs:
-            self.client.remove_cog(cog)
-            self.client.add_cog(cog)
+        check = args.lower() + ".py"
+        cog = "cogs." + args.lower()
+        if check in cogs:
+            self.client.unload_extension(cog)
+            self.client.load_extension(cog)
             embed = discord.Embed(
                 title=f"Reloaded {args.lower()}.", color=Config.botcolor())
             await ctx.send(embed=embed)
@@ -70,6 +77,8 @@ class Dev(commands.Cog):
             embed = discord.Embed(
                 title=f"{args.title()} is not a valid cog.", color=Config.botcolor())
             await ctx.send(embed=embed)
+        
+    
 
 def setup(client):
     client.add_cog(Dev(client))

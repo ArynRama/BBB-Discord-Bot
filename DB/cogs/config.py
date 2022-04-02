@@ -20,8 +20,11 @@ class Config(commands.Cog):
         botcolor = Color.from_rgb(int(r), int(g), int(b))
         return botcolor
 
-    async def devs():
-        devs = []
+    def devs():
+        devs = [
+            "419848392223621120",
+            ""
+        ]
         return devs
 
     def cog_check(self, ctx):
