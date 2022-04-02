@@ -7,7 +7,7 @@ from cogs.config import Config
 from discord.ext import commands
 import dotenv
 
-from cogs.help import HelpCmd
+from essential.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
 version = "2.0.0beta"
