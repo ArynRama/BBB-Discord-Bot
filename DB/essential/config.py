@@ -23,6 +23,3 @@ def botcolor():
 def devs():
     devs = config["Setting"]["Devs"]
     return devs
-
-def prefix():
-    return config["Setting"]["Prefix"]

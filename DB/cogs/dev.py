@@ -4,8 +4,7 @@ from os.path import isfile, join
 from discord.ext import commands
 from essential.config import botcolor, devs
 from essential.errors import NotDev
-from cogs import music,config, event, mischief
-
+from . import music, event, mischief
 class Dev(commands.Cog):
     def __init__(self, client):
         self.client = client

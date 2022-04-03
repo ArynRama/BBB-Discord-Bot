@@ -5,7 +5,6 @@ import tracemalloc
 from discord import client
 from discord.ext import commands
 from essential.help import HelpCmd
-from essential.config import prefix
 
 description = f'''A bot I made for BBB.'''
 version = "2.0.0beta"
@@ -23,14 +22,13 @@ class clients(commands.Bot):
         print('Owner: ArynRama#6043')
         print('------')
 
-client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
+client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
 class LoadCogs:
     extentions = [
         "music",
         "mischief"
     ]
     dependencies = [
-        "config",
         "event",
         "dev"
     ]

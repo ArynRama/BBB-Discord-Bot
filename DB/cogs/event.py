@@ -1,6 +1,6 @@
 import discord
 import json
-from essential.config import botcolor, default_prefix
+from essential.config import botcolor
 from discord.ext import commands
 
 class Events(commands.Cog):
@@ -28,8 +28,7 @@ class Events(commands.Cog):
         with open("json/settings.json") as f:
             file = json.load(f)
             file[guild.id] = {
-                "DJ-Mode": "False",
-                "prefix": str(default_prefix())
+                "DJ-Mode": "False"
             }
 
 def setup(client):
