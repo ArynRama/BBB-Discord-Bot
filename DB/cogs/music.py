@@ -1,20 +1,16 @@
-from turtle import title
 import typing
-import wave
 import discord
 import wavelink
-import youtube_dl
-from essential.config import botcolor, devs
-from essential.checks import is_dev
 from discord.ext import commands
-from youtubesearchpython import VideosSearch
 from essential.player import Player
+from essential.checks import is_dev
+from essential.config import botcolor, devs
 
-class Music(commands.Cog, wavelink.WavelinkMixin):
+class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.wavelink = wavelink.Client(bot=client)
-        self.client.loop.create_task(self.start_nodes())
+
+        self.client.loop.create_task(self.connect_nodes())
 
     async def cog_check(self, ctx):
         if isinstance(ctx.channel, discord.DMChannel):
@@ -24,15 +20,11 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         else:
             return True
         
-    async def start_nodes(self):
+    async def connect_nodes(self):
+        """Connect to Lavalink nodes."""
         await self.client.wait_until_ready()
-        await self.wavelink.initiate_node(host="lavalink.oops.wtf",region="us_central", rest_uri="lavalink.oops.wtf",port=443,identifier="Lavalink",secure=True,password="www.freelavalink.ga")
 
-    def get_player(self, obj):
-        if isinstance(obj, commands.Context):
-            return self.wavelink.get_player(obj.guild.id, cls=Player, context=obj)
-        elif isinstance(obj, discord.Guild):
-            return self.wavelink.get_player(obj.id, cls=Player)
+        self.wavelink = await wavelink.NodePool.create_node(bot=self.client, host="lavalink.oops.wtf",port=443,https=True,password="www.freelavalink.ga", identifier="Lavalink")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -44,14 +36,14 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             if not [m for m in before.channel.members if not m.bot]:
                 pass
     
-    @wavelink.WavelinkMixin.listener()
-    async def on_node_ready(self, node):
+    @commands.Cog.listener()
+    async def on_wavelink_node_ready(self, node):
         print(f"Connected to {node.identifier}")
 
     @commands.command(pass_context=True, aliases=["connect", "c", "j"])
     async def join(self, ctx):
         """Makes the bot join the channel you're in"""
-        player = self.get_player(ctx)
+        player = ctx.voice_client
         if ctx.author.voice:
             channel_c = ctx.author.voice.channel
             await player.connect(channel_c.id)
@@ -63,19 +55,19 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @is_dev()
     async def forcejoin(self, ctx, *, channel:typing.Optional[discord.VoiceChannel]=None):
         """Makes the bot join the channel you're in"""
-        player = self.get_player(ctx)
+        player = ctx.voice_client
         if channel == None:
             embed = discord.Embed(color=botcolor(), title=f"Please add a valid voice channel to join.")
             await ctx.send(embed = embed, delete_after=5)
         else:
-            await player.connect(channel.id)
+            await channel.connect(cls=wavelink.Player)
             embed = discord.Embed(color=botcolor(), title=f"Joining {channel.name}")
             await ctx.send(embed = embed, delete_after=5)
 
     @commands.command(pass_context=True, aliases=["disconnect", "dc","away"])
     async def leave(self, ctx):
         """Makes the bot leave the voice channel."""
-        player = self.wavelink.get_player(ctx.guild.id)
+        player = ctx.voice_client
         if str(ctx.author.id) in devs():
             await player.destroy()
             embed = discord.Embed(color=botcolor(), title = "Disconnected.")

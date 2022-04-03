@@ -1,10 +1,10 @@
+import json
 import discord
 from os import listdir
-from os.path import isfile, join
 from discord.ext import commands
-from essential.config import botcolor, devs
-from essential.errors import NotDev
+from os.path import isfile, join
 from . import music, event, mischief
+from essential.config import botcolor, devs
 class Dev(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -13,8 +13,24 @@ class Dev(commands.Cog):
         if str(ctx.author.id) in devs():
             return True
         else:
-            raise NotDev
             return False
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print("Dev has been loaded.")
+        guilds = self.client.guilds
+        with open("DB\json\settings.json", "r") as f:
+            settings: dict = json.load(f)
+        for i in guilds:
+            if str(i.id) in settings:
+                pass
+            else:
+                settings[i.id] = {
+                    "DJ-Only": "False",
+                    "DJ-Role": "None"
+                }
+                with open("DB\json\settings.json", "w") as f:
+                    json.dump(settings, f)
 
     @commands.command(aliases=["shutdown", "logout"])
     async def kill(self, ctx):
