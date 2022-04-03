@@ -1,5 +1,6 @@
 import discord
-from cogs.config import Config
+import json
+from essential.config import botcolor, default_prefix
 from discord.ext import commands
 
 class Events(commands.Cog):
@@ -18,9 +19,18 @@ class Events(commands.Cog):
                     await message.delete()
                 except:
                     embed = discord.Embed(
-                        title="Missing Permission.", color=Config.botcolor)
+                        title="Missing Permission.", color=botcolor())
                     await message.channel.send(embed=embed, delete_after=5)
                     raise commands.BotMissingPermissions("DeleteMessages")
+    
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        with open("json/settings.json") as f:
+            file = json.load(f)
+            file[guild.id] = {
+                "DJ-Mode": "False",
+                "prefix": str(default_prefix())
+            }
 
 def setup(client):
     client.add_cog(Events(client))

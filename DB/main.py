@@ -1,13 +1,11 @@
 import os
+import dotenv
 import discord
 import tracemalloc
-
 from discord import client
-from cogs.config import Config
 from discord.ext import commands
-import dotenv
-
 from essential.help import HelpCmd
+from essential.config import prefix
 
 description = f'''A bot I made for BBB.'''
 version = "2.0.0beta"
@@ -25,7 +23,7 @@ class clients(commands.Bot):
         print('Owner: ArynRama#6043')
         print('------')
 
-client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
+client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
 class LoadCogs:
     extentions = [
         "music",

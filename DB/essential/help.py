@@ -1,5 +1,5 @@
 import discord
-from cogs.config import Config
+from essential.config import botcolor
 from discord.ext import commands
 
 hidden_cogs = ('Config','Events')
@@ -17,7 +17,7 @@ class HelpCmd(commands.HelpCommand):
         lines = '\n'.join(coglist)
         cogs = f"```prolog\n{lines}```"
 
-        emb = discord.Embed(title="RTFM help menu (online version)", colour=Config.botcolor(), description=description)
+        emb = discord.Embed(title="RTFM help menu (online version)", colour=botcolor(), description=description)
         emb.add_field(name="Modules", value=cogs)
         emb.set_footer(text="Type do help <module> to see commands or do help <command>")
 
@@ -28,7 +28,7 @@ class HelpCmd(commands.HelpCommand):
             return await self.get_destination().send(f'No command or cog called "{cog.qualified_name}" found. Remember names are case-sensitive.')
         commandsList = await self.filter_commands(cog.get_commands())
 
-        emb = discord.Embed(title=f"Commands from {cog.qualified_name} module (online version)", colour=Config.botcolor())
+        emb = discord.Embed(title=f"Commands from {cog.qualified_name} module (online version)", colour=botcolor())
 
         emb.set_footer(
             text="<argument needed> [optional argument] [a|b] : either a or b")
@@ -55,7 +55,7 @@ class HelpCmd(commands.HelpCommand):
         if not description.startswith(command.qualified_name):
             description = f"{command.qualified_name} {command.signature}\n\n{description}"
 
-        emb = discord.Embed(title=f"Help for command {command.qualified_name}", colour=Config.botcolor())
+        emb = discord.Embed(title=f"Help for command {command.qualified_name}", colour=botcolor())
 
         await self.get_destination().send(embed=emb)
 
