@@ -1,7 +1,8 @@
 import discord
 import wavelink
-from typing import Union
+from typing import Optional
 
 class Player(wavelink.Player):
-    def __init__(self, dj:discord.Role=None):
-        self.dj = dj
+    def __init__(self): #dj:Optional[discord.Role]=None):
+        #self.dj = dj
+        super().__init__()

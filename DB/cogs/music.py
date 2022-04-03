@@ -43,10 +43,10 @@ class Music(commands.Cog):
     @commands.command(pass_context=True, aliases=["connect", "c", "j"])
     async def join(self, ctx):
         """Makes the bot join the channel you're in"""
-        player = ctx.voice_client
+        player = Player()
         if ctx.author.voice:
-            channel_c = ctx.author.voice.channel
-            await player.connect(channel_c.id)
+            channel = ctx.author.voice.channel
+            await channel.connect(cls=player)
         else:
             embed = discord.Embed(color=botcolor(), title=f"You must be connected to a voice channel.")
             await ctx.send(embed = embed, delete_after=5)
@@ -55,12 +55,12 @@ class Music(commands.Cog):
     @is_dev()
     async def forcejoin(self, ctx, *, channel:typing.Optional[discord.VoiceChannel]=None):
         """Makes the bot join the channel you're in"""
-        player = ctx.voice_client
+        player = Player()
         if channel == None:
             embed = discord.Embed(color=botcolor(), title=f"Please add a valid voice channel to join.")
             await ctx.send(embed = embed, delete_after=5)
         else:
-            await channel.connect(cls=wavelink.Player)
+            await channel.connect(cls=player)
             embed = discord.Embed(color=botcolor(), title=f"Joining {channel.name}")
             await ctx.send(embed = embed, delete_after=5)
 
@@ -69,110 +69,86 @@ class Music(commands.Cog):
         """Makes the bot leave the voice channel."""
         player = ctx.voice_client
         if str(ctx.author.id) in devs():
-            await player.destroy()
+            await player.disconnect()
             embed = discord.Embed(color=botcolor(), title = "Disconnected.")
             await ctx.send(embed = embed, delete_after=5)
         elif ctx.author.voice:
-            await player.destroy()
+            await player.disconnect()
             embed = discord.Embed(color=botcolor(), title = "Disconnected.")
             await ctx.send(embed = embed, delete_after=5)
         else:
             embed = discord.Embed(color=botcolor(), title = "You are not in the voice channel.")
             await ctx.send(embed = embed, delete_after=5)
+ 
+    @commands.command(pass_context=True, aliases=["p", "sing"])
+    async def play(self, ctx, *, search:wavelink.YouTubeTrack= None):
+        """Plays music."""
+        if search == None:
+            embed = discord.Embed(title="You must include a song.",color=botcolor())
+            return await ctx.send(embed=embed, delete_after=5)
+        if ctx.author.voice or ctx.author in devs():
+            if ctx.voice_client:
+                player = ctx.voice_client
+                channel = ctx.message.author.voice.channel
+                await player.play(search)
+            else:
+                player = Player()
+                channel = ctx.message.author.voice.channel
+                channel.connect(cls=player)
+                player = ctx.voice_client
+                await player.play(search)
+        else:
+            embed = discord.Embed(color=botcolor(), title = "You must be connected to a voice channel.")
+            await ctx.send(embed = embed, delete_after=5)
 
-    # @commands.command(pass_context=True)
-    # async def pause(self, ctx):
-    #     """Pauses the music."""
-    #     voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
-    #     if voice.is_playing:
-    #         embed = discord.Embed(color=botcolor(), title = "Pausing...")
-    #         await ctx.send(embed = embed, delete_after=5)
-    #         await voice.pause()
-    #     else:
-    #         embed = discord.Embed(color=botcolor(), title="Not playing anything.")
-    #         await ctx.send(embed = embed, delete_after=5)
+    @commands.command(pass_context=True, aliases=["rest", "wait"])
+    async def pause(self, ctx):
+        """Pauses the music."""
+        player = ctx.voice_client
+        if ctx.author.voice or ctx.author.id in devs():
+            if player.is_playing:
+                embed = discord.Embed(color=botcolor(), title = "Pausing...")
+                await ctx.send(embed = embed, delete_after=5)
+                await player.pause()
+            else:
+                embed = discord.Embed(color=botcolor(), title="Not playing anything.")
+                await ctx.send(embed = embed, delete_after=5)
+        else:
+            embed = discord.Embed(color=botcolor(), title=f"You must be connected to {ctx.voice_client.channel}.")
+            await ctx.send(embed = embed, delete_after=5)
 
-    # @commands.command(pass_context=True)
-    # async def resume(self, ctx):
-    #     """Resumes the music"""
-    #     if ctx.author.voice:
-    #         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
-    #         if voice.is_paused:
-    #             embed = discord.Embed(color=botcolor(), title = "Resuming...")
-    #             await ctx.send(embed = embed, delete_after=5)
-    #             await voice.resume()
-    #         else:
-    #             embed = discord.Embed(color=botcolor(), title = "Not paused right now.")
-    #             await ctx.send(embed = embed, delete_after=5)
-    #     else:
-    #         embed = discord.Embed(color=botcolor(), title = "You must be connected to a voice channel.")
-    #         await ctx.send(embed = embed, delete_after=5)
+    @commands.command(pass_context=True)
+    async def resume(self, ctx):
+        """Resumes the music"""
+        if ctx.author.voice or ctx.author.id in devs():
+            player = ctx.voice_client
+            if player.is_paused:
+                embed = discord.Embed(color=botcolor(), title = "Resuming...")
+                await ctx.send(embed = embed, delete_after=5)
+                await player.resume()
+            else:
+                embed = discord.Embed(color=botcolor(), title = "Not paused right now.")
+                await ctx.send(embed = embed, delete_after=5)
+        else:
+            embed = discord.Embed(color=botcolor(), title = f"You must be connected to {ctx.voice_client.channel}.")
+            await ctx.send(embed = embed, delete_after=5)
 
-    # @commands.command(pass_context=True)
-    # async def stop(self, ctx):
-    #     """Stops the music."""
-    #     if ctx.author.voice:
-    #         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
-    #         if voice.is_playing() or voice.is_paused():
-    #             embed = discord.Embed(color=botcolor(), title = "Stoping.")
-    #             await ctx.send(embed = embed, delete_after=5)
-    #             # queue[str(ctx.guild.id)] = [{}]
-    #             await voice.stop()
-    #         else:
-    #             embed = discord.Embed(color=botcolor(), title = "Not playing anything")
-    #             await ctx.send(embed = embed, delete_after=5)
-    #     else:
-    #         embed = discord.Embed(color=Config.botcolor(
-    #         ), title="You must be connected to a voice channel.")
-    #         await ctx.send(embed=embed, delete_after=5)
+    @commands.command(pass_context=True)
+    async def stop(self, ctx):
+        """Stops the music."""
+        if ctx.author.voice or ctx.author.id in devs():
+            player = ctx.voice_client
+            if player.is_playing() or player.is_paused():
+                embed = discord.Embed(color=botcolor(), title = "Stoping.")
+                await ctx.send(embed = embed, delete_after=5)
+                await player.stop()
+            else:
+                embed = discord.Embed(color=botcolor(), title = "Not playing anything")
+                await ctx.send(embed = embed, delete_after=5)
+        else:
+            embed = discord.Embed(color=botcolor(), title=f"You must be connected to {ctx.voice_client.channel}.")
+            await ctx.send(embed=embed, delete_after=5)
 
-    # @commands.command(pass_context=True)
-    # async def play(self, ctx, *, args= None):
-    #     """Plays music."""
-    #     if args == None:
-    #         embed = discord.Embed(title="You must include a song.",color=botcolor())
-    #         return await ctx.send(embed=embed, delete_after=5)
-    #     if ctx.author.voice:
-    #         voice_client = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
-    #         if voice_client == None:
-    #             channel = ctx.message.author.voice.channel
-    #             voice = await channel.connect()
-    #             embed = discord.Embed(color=botcolor(), title=f"Joining {channel.name}")
-    #             await ctx.send(embed = embed, delete_after=5)
-    #             voice.stop
-    #         voice = ctx.guild.voice_client
-    #         YDL_OPTIONS = {'format': "bestaudio"}
-    #         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-    #         search = VideosSearch(args, limit=1)
-    #         result = search.result()
-    #         title = result['result'][0]['title']
-    #         link = result['result'][0]['link']
-    #         if args.__contains__("youtube.com") or args.__contains__("youtu.be"):
-    #             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-    #                 info = ydl.extract_info(args, download=False)
-    #         else:
-    #             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-    #                 link = result['result'][0]['link']
-    #                 info = ydl.extract_info(link, download=False)
-    #         url2 = info['formats'][0]['url']
-    #         if voice.is_playing():
-    #             embed = discord.Embed(color=botcolor(), title=f"Added {title} queue.", description = link)
-    #             await ctx.send(embed=embed, delete_after=5)
-    #             if len(queue.keys()) == 0:
-    #                 queue[str(ctx.guild.id)] = [{"title": title, "link": link, "url2": url2}]
-    #             else:
-    #                 if len(queue[str(ctx.guild.id)]) >= 1:
-    #                     queue[str(ctx.guild.id)].append({"title": title, "link": link, "url2": url2})
-    #                 elif queue[str(ctx.guild.id)] == [] or queue[str(ctx.guild.id)] == {}:
-    #                     queue[str(ctx.guild.id)] = [{"title": title, "link": link, "url2": url2}] 
-    #         else:
-    #             source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-    #             voice.play(source, after=lambda x=None: check_queue(ctx))
-    #             embed = discord.Embed(color=botcolor(), title=f"Playing {title}.", description=link)
-    #             await ctx.send(embed=embed, delete_after=5)
-    #     else:
-    #         embed = discord.Embed(color=botcolor(), title = "You must be connected to a voice channel.")
-    #         await ctx.send(embed = embed, delete_after=5)
 
     # @commands.command(pass_context=True)
     # async def queue(self, ctx):
