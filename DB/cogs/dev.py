@@ -19,7 +19,7 @@ class Dev(commands.Cog):
     async def on_ready(self):
         print("Dev has been loaded.")
         guilds = self.client.guilds
-        with open("DB\json\settings.json", "r") as f:
+        with open("/app/DB/json/settings.json", "r") as f:
             settings: dict = json.load(f)
         for i in guilds:
             if str(i.id) in settings:
@@ -29,7 +29,7 @@ class Dev(commands.Cog):
                     "DJ-Only": "False",
                     "DJ-Role": "None"
                 }
-                with open("DB\json\settings.json", "w") as f:
+                with open("/app/DB/json/settings.json", "w") as f:
                     json.dump(settings, f)
 
     @commands.command(aliases=["shutdown", "logout"])
