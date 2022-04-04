@@ -98,7 +98,7 @@ class Music(commands.Cog):
         if search == None:
             embed = discord.Embed(title="You must include a song.",color=botcolor())
             return await ctx.send(embed=embed, delete_after=5)
-        if ctx.author.voice or ctx.author in devs():
+        if ctx.author.voice or ctx.author.id in devs():
             if ctx.voice_client:
                 player = ctx.voice_client
                 if player.is_playing:
