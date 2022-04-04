@@ -55,7 +55,7 @@ class Dev(commands.Cog):
         cog = "cogs."+args.lower()
         check = args.lower() + ".py"
         if check in cogs:
-            self.client.add_cog(cog)
+            self.client.load_extension(cog)
             embed = discord.Embed(title=f"Loaded {args.lower()}.", color=botcolor())
             await ctx.send(embed=embed, delete_after=5)
         else:

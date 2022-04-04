@@ -4,5 +4,5 @@ from typing import Optional
 
 class Player(wavelink.Player):
     def __init__(self): #dj:Optional[discord.Role]=None):
-        #self.dj = dj
+        self.Queue: wavelink.Queue = wavelink.Queue()
         super().__init__()

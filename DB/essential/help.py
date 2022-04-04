@@ -28,7 +28,7 @@ class HelpCmd(commands.HelpCommand):
             return await self.get_destination().send(f'No command or cog called "{cog.qualified_name}" found. Remember names are case-sensitive.')
         commandsList = await self.filter_commands(cog.get_commands())
 
-        emb = discord.Embed(title=f"Commands from {cog.qualified_name} module (online version)", colour=botcolor())
+        emb = discord.Embed(title=f"Commands from {cog.qualified_name}.", colour=botcolor())
 
         emb.set_footer(
             text="<argument needed> [optional argument] [a|b] : either a or b")
@@ -40,7 +40,7 @@ class HelpCmd(commands.HelpCommand):
                     signature = command.help.split('\n')[0]
                 else:
                     signature = f'{command.qualified_name} {command.signature}'
-                doc += f'\n**Usage -** -{signature}'
+                doc += f'\n**Usage: ** -{signature}'
 
             emb.add_field(name=command.name, value=doc, inline=False)
 

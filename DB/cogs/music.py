@@ -1,6 +1,8 @@
 import typing
+import asyncio
 import discord
 import wavelink
+import youtubesearchpython
 from discord.ext import commands
 from essential.player import Player
 from essential.checks import is_dev
@@ -39,6 +41,16 @@ class Music(commands.Cog):
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node):
         print(f"Connected to {node.identifier}")
+    
+    @commands.Cog.listener()
+    async def on_wavelink_track_end(self, Player: wavelink.Player, track: wavelink.Track, reason):
+        player = Player
+        queue = player.Queue
+        if queue.is_empty:
+            pass
+        else:
+            await player.play(queue.get())
+
 
     @commands.command(pass_context=True, aliases=["connect", "c", "j"])
     async def join(self, ctx):
@@ -89,12 +101,38 @@ class Music(commands.Cog):
         if ctx.author.voice or ctx.author in devs():
             if ctx.voice_client:
                 player = ctx.voice_client
-                channel = ctx.message.author.voice.channel
-                await player.play(search)
+                if player.is_playing:
+                    player.Queue.put(search)
+                else:
+                    await player.play(search)
             else:
                 player = Player()
                 channel = ctx.message.author.voice.channel
-                channel.connect(cls=player)
+                await channel.connect(cls=player)
+                player = ctx.voice_client
+                await player.play(search)
+        else:
+            embed = discord.Embed(color=botcolor(), title = "You must be connected to a voice channel.")
+            await ctx.send(embed = embed, delete_after=5)
+        
+    @commands.command(pass_context=True, aliases=["pn", "addfrontqueue"])
+    async def playnext(self, ctx, *, search:wavelink.YouTubeTrack= None):
+        """Adds music to the queue."""
+        if search == None:
+            embed = discord.Embed(title="You must include a song.",color=botcolor())
+            return await ctx.send(embed=embed, delete_after=5)
+        if ctx.author.voice or ctx.author in devs():
+            if ctx.voice_client:
+                player = ctx.voice_client
+                if ctx.voice_client.is_playing:
+                    queue = player.Queue
+                    queue.put_at_front(search)
+                else:
+                    await player.play(search)
+            else:
+                player = Player()
+                channel = ctx.message.author.voice.channel
+                await channel.connect(cls=player)
                 player = ctx.voice_client
                 await player.play(search)
         else:
@@ -149,29 +187,65 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title=f"You must be connected to {ctx.voice_client.channel}.")
             await ctx.send(embed=embed, delete_after=5)
 
-
-    # @commands.command(pass_context=True)
-    # async def queue(self, ctx):
-    #     """View the queue."""
-    #     guild_id = str(ctx.message.guild.id)
-    #     i = 1
-    #     embed = discord.Embed(color=botcolor(), title="Queue")
-    #     for a in queue[guild_id]:
-    #         embed.add_field(name = f"#{i}",value = f"[{a['title']}]({a['link']})", inline=False)
-    #         i = i+1
-    #     await ctx.send(embed=embed, delete_after= 30)
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
     
-    # @commands.command(pass_context=True)
-    # async def skip(self, ctx):
-    #     """Skip this song."""
-    #     if ctx.author.voice:
-    #         embed = discord.Embed(color=botcolor(),title=f"Skipping.")
-    #         voice = discord.utils.get(ctx.bot.voice_clients, guild = ctx.guild)
-    #         await ctx.send(embed=embed, delete_after=5)
-    #         self.check_queue(ctx)
-    #     else:
-    #         embed = discord.Embed(color=botcolor(), title="You must be connected to a voice channel.")
-    #         await ctx.send(embed=embed, delete_after=5)
+        if not member.id == self.client.user.id:
+            return
+        elif before.channel is None:
+            voice = after.channel.guild.voice_client
+            time = 0
+            while True:
+                await asyncio.sleep(1)
+                time = time + 1
+                if voice.is_playing() and not voice.is_paused():
+                    time = 0
+                if time == 600:
+                    await voice.disconnect()
+                if not voice.is_connected():
+                    break
+
+    @commands.command(pass_context=True)
+    async def queue(self, ctx):
+        """View the queue."""
+        queue = ctx.voice_client.Queue
+        if isinstance(queue, wavelink.Queue):
+            if queue.is_empty:
+                embed = discord.Embed(color=botcolor(), title="No songs currently queued.")
+                await ctx.send(embed=embed, delete_after= 5)
+            else:
+                embed = discord.Embed(color=botcolor(), title="Queue")
+                i = 0
+                for a in queue:
+                    a = str(a)
+                    i = i + 1
+                    link = youtubesearchpython.VideosSearch(a,limit=1).result()["result"][0]["link"]
+                    embed.add_field(name=f"**#{i}**  {a}" , value = f"{link}", inline=False)
+                await ctx.send(embed=embed, delete_after= 30)
+        else:
+            embed = discord.Embed(color=botcolor(), title="No songs currently queued.")
+            await ctx.send(embed=embed, delete_after= 5)
+    
+    @commands.command(pass_context=True)
+    async def skip(self, ctx):
+        """Skip this song."""
+        if ctx.author.voice:
+            if ctx.voice_client:
+                player = ctx.voice_client
+                queue = player.Queue
+                if queue.is_empty:
+                    await player.stop()
+                    embed = discord.Embed(color=botcolor(),title=f"Stoping.")
+                else:
+                    await player.stop()
+                    embed = discord.Embed(color=botcolor(),title=f"Skipping.")
+                await ctx.send(embed=embed, delete_after=5)
+            else:
+                embed = discord.Embed(color=botcolor(),title=f"Not playing anything.")
+                await ctx.send(embed=embed, delete_after=5)
+        else:
+            embed = discord.Embed(color=botcolor(), title="You must be connected to a voice channel.")
+            await ctx.send(embed=embed, delete_after=5)
 
 def setup(client):
     client.add_cog(Music(client))
