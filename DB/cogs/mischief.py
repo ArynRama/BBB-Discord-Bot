@@ -20,7 +20,7 @@ class Mischief(commands.Cog):
         print("Mischief has been loaded.")
 
     @commands.command()
-    async def annoy(self, ctx, user: discord.Member, times: int = 10):
+    async def annoy(self, ctx: commands.Context, user: discord.Member, times: int = 10):
         """Mentions user alot of times"""
         for a in range(times):
             await ctx.send(user.mention)

@@ -1,5 +1,6 @@
 import json
 import discord
+import sys
 from os import listdir
 from discord.ext import commands
 from os.path import isfile, join
@@ -9,7 +10,7 @@ class Dev(commands.Cog):
     def __init__(self, client):
         self.client = client
     
-    async def cog_check(self, ctx):
+    async def cog_check(self, ctx: commands.Context):
         if str(ctx.author.id) in devs():
             return True
         else:
@@ -19,21 +20,35 @@ class Dev(commands.Cog):
     async def on_ready(self):
         print("Dev has been loaded.")
         guilds = self.client.guilds
-        with open("/app/DB/json/settings.json", "r") as f:
-            settings: dict = json.load(f)
-        for i in guilds:
-            if str(i.id) in settings:
-                pass
-            else:
-                settings[i.id] = {
-                    "DJ-Only": "False",
-                    "DJ-Role": "None"
-                }
-                with open("/app/DB/json/settings.json", "w") as f:
-                    json.dump(settings, f)
+        if sys.platform.__contains__("win"):
+            with open("DB/json/settings.json", "r") as f:
+                settings: dict = json.load(f)
+            for i in guilds:
+                if str(i.id) in settings:
+                    pass
+                else:
+                    settings[i.id] = {
+                        "DJ-Only": "False",
+                        "DJ-Role": "None"
+                    }
+                    with open("DB/json/settings.json", "w") as f:
+                        json.dump(settings, f)
+        elif sys.platform.__contains__("linux"):
+            with open("/app/DB/json/settings.json", "r") as f:
+                settings: dict = json.load(f)
+            for i in guilds:
+                if str(i.id) in settings:
+                    pass
+                else:
+                    settings[i.id] = {
+                        "DJ-Only": "False",
+                        "DJ-Role": "None"
+                    }
+                    with open("/app/DB/json/settings.json", "w") as f:
+                        json.dump(settings, f)
 
     @commands.command(aliases=["shutdown", "logout"])
-    async def kill(self, ctx):
+    async def kill(self, ctx: commands.Context):
         """Shutsdown the bot."""
         embed = discord.Embed(
             title="Bot is disconnecting.", color=botcolor())
@@ -42,14 +57,14 @@ class Dev(commands.Cog):
         await self.client.close()
     
     @commands.group(invoke_without_command=True, name="cog")
-    async def cogs(self, ctx):
+    async def cogs(self, ctx: commands.Context):
             embed=discord.Embed(title="Cogs", color=botcolor())
             command = f"```prolog\nEnable\nUnload\nReload```"
             embed.add_field(name="Sub-Commands", value=command)
             await ctx.send(embed=embed, delete_after=5)
 
     @cogs.command(aliases=["activate", "a", "e","load","l"])
-    async def enable(self, ctx, args: str):
+    async def enable(self, ctx: commands.Context, args: str):
         mypath="./DB/cogs"
         cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
         cog = "cogs."+args.lower()
@@ -64,7 +79,7 @@ class Dev(commands.Cog):
             await ctx.send(embed=embed, delete_after=5)
 
     @cogs.command(aliases=["deactivate","d","u","disable"])
-    async def unload(self,ctx,args: str):
+    async def unload(self,ctx: commands.Context,args: str):
         mypath = "./DB/cogs"
         cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
         check = args.lower() + ".py"
@@ -80,7 +95,7 @@ class Dev(commands.Cog):
             await ctx.send(embed=embed, delete_after=5)
     
     @cogs.command(aliases=["reactivate","r","reenable"])
-    async def reload(self,ctx,args: str):
+    async def reload(self,ctx: commands.Context,args: str):
         mypath = "./DB/cogs"
         cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
         check = args.lower() + ".py"
@@ -97,7 +112,7 @@ class Dev(commands.Cog):
             await ctx.send(embed=embed, delete_after=5)
     
     @cogs.command()
-    async def add(self, ctx, args: str):
+    async def add(self, ctx: commands.Context, args: str):
         cog = args
         self.client.add_cog(cog)
         embed = discord.Embed(
