@@ -143,7 +143,7 @@ class Music(commands.Cog):
     async def pause(self, ctx):
         """Pauses the music."""
         player = ctx.voice_client
-        if ctx.author.voice or ctx.author.id in devs():
+        if ctx.author.voice or str(ctx.author.id) in devs():
             if player.is_playing:
                 embed = discord.Embed(color=botcolor(), title = "Pausing...")
                 await ctx.send(embed = embed, delete_after=5)
@@ -158,7 +158,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def resume(self, ctx):
         """Resumes the music"""
-        if ctx.author.voice or ctx.author.id in devs():
+        if ctx.author.voice or str(ctx.author.id) in devs():
             player = ctx.voice_client
             if player.is_paused:
                 embed = discord.Embed(color=botcolor(), title = "Resuming...")
