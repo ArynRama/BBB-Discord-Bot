@@ -1,12 +1,13 @@
 aiohttp==3.7.4.post0
 anyio==3.5.0
-async-timeout==3.0.1
+async-timeout==3.0.1      
 attrs==21.4.0
-certifi==2021.10.8
+certifi==2021.10.8        
 cffi==1.15.0
 chardet==4.0.0
 charset-normalizer==2.0.12
 discord==1.7.3
+discord.py==1.7.3
 ffmpeg-python==0.2.0
 future==0.18.2
 h11==0.12.0
@@ -23,6 +24,6 @@ python-dotenv==0.20.0
 rfc3986==1.5.0
 sniffio==1.2.0
 typing_extensions==4.1.1
+wavelink==1.2.4
 yarl==1.7.2
-youtube-dl==2021.12.17
 youtube-search-python==1.6.3
