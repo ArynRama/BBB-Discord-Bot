@@ -174,7 +174,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def stop(self, ctx):
         """Stops the music."""
-        if ctx.author.voice or ctx.author.id in devs():
+        if ctx.author.voice or str(ctx.author.id) in devs():
             player = ctx.voice_client
             if player.is_playing() or player.is_paused():
                 embed = discord.Embed(color=botcolor(), title = "Stoping.")
