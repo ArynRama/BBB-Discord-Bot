@@ -46,8 +46,7 @@ class Music(commands.Cog):
         print(f"Connected to {node.identifier}")
     
     @commands.Cog.listener()
-    async def on_wavelink_track_end(self, Player: wavelink.Player, track: wavelink.Track, reason):
-        player = Player
+    async def on_wavelink_track_end(self, player: wavelink.Player, track: wavelink.Track, reason):
         queue = player.Queue
         if queue.is_empty:
             pass
@@ -55,8 +54,7 @@ class Music(commands.Cog):
             await player.play(queue.get())
     
     @commands.Cog.listener()
-    async def on_wavelink_track_stuck(self, Player: wavelink.Player, track: wavelink.Track, reason):
-        player = Player
+    async def on_wavelink_track_stuck(self, player: wavelink.Player, track: wavelink.Track, threshold):
         queue = player.Queue
         if queue.is_empty:
             pass
@@ -64,8 +62,7 @@ class Music(commands.Cog):
             await player.play(queue.get())
     
     @commands.Cog.listener()
-    async def on_wavelink_track_exception(self, Player: wavelink.Player, track: wavelink.Track, reason):
-        player = Player
+    async def on_wavelink_track_exception(self, player: wavelink.Player, track: wavelink.Track, error):
         queue = player.Queue
         if queue.is_empty:
             pass
