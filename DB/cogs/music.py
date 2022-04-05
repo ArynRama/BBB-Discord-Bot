@@ -313,7 +313,7 @@ class Music(commands.Cog):
             await ctx.send(player.volume)
         elif float(volume):
             volume = float(volume)
-            player.set_volume(volume)
+            await player.set_volume(volume)
         else:
             embed = discord.Embed(title="Invalid volume.", color=botcolor())
             ctx.send(embed=embed,delete_after=5)
