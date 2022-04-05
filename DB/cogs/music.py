@@ -118,7 +118,7 @@ class Music(commands.Cog):
         if ctx.author.voice or str(ctx.author.id) in devs():
             if ctx.voice_client:
                 player = ctx.voice_client
-                if player.is_playing:
+                if player.is_playing():
                     player.Queue.put(search)
                 else:
                     await player.play(search)
@@ -161,7 +161,7 @@ class Music(commands.Cog):
         """Pauses the music."""
         player = ctx.voice_client
         if ctx.author.voice or str(ctx.author.id) in devs():
-            if player.is_playing:
+            if player.is_playing():
                 embed = discord.Embed(color=botcolor(), title = "Pausing...")
                 await ctx.send(embed = embed, delete_after=5)
                 await player.pause()
@@ -177,7 +177,7 @@ class Music(commands.Cog):
         """Resumes the music"""
         if ctx.author.voice or str(ctx.author.id) in devs():
             player = ctx.voice_client
-            if player.is_paused:
+            if player.is_paused():
                 embed = discord.Embed(color=botcolor(), title = "Resuming...")
                 await ctx.send(embed = embed, delete_after=5)
                 await player.resume()
