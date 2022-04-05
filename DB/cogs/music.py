@@ -49,7 +49,7 @@ class Music(commands.Cog):
     async def on_wavelink_track_end(self, player: wavelink.Player, track: wavelink.Track, reason):
         queue = player.Queue
         if queue.is_empty:
-            pass
+            await player.stop()
         else:
             await player.play(queue.get())
     
@@ -57,7 +57,7 @@ class Music(commands.Cog):
     async def on_wavelink_track_stuck(self, player: wavelink.Player, track: wavelink.Track, threshold):
         queue = player.Queue
         if queue.is_empty:
-            pass
+            await player.stop()
         else:
             await player.play(queue.get())
     
@@ -65,7 +65,7 @@ class Music(commands.Cog):
     async def on_wavelink_track_exception(self, player: wavelink.Player, track: wavelink.Track, error):
         queue = player.Queue
         if queue.is_empty:
-            pass
+            await player.stop()
         else:
             await player.play(queue.get())
 
