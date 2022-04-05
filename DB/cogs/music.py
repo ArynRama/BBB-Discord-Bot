@@ -49,7 +49,7 @@ class Music(commands.Cog):
     async def on_wavelink_track_end(self, player: wavelink.Player, track: wavelink.Track, reason):
         queue = player.Queue
         if queue.is_empty:
-            await player.stop()
+            pass
         else:
             await player.play(queue.get())
     
