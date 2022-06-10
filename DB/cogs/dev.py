@@ -120,7 +120,7 @@ class Dev(commands.Cog):
         await ctx.send(embed=embed, delete_after=5)
         
     @commands.command()
-    async def users(self):
+    async def users(self, ctx):
         with open("DB/json/settings.json", "r") as f:
             users = json.load(f)["users"]
         for guild in self.client.guilds:
@@ -133,6 +133,8 @@ class Dev(commands.Cog):
                             "vc_update": "false"
                         }
                         json.dump(users,f)
-                        
+        embed= discord.Embed(title="Added new users.")
+        await ctx.send(embed=embed)
+
 def setup(client):
     client.add_cog(Dev(client))
