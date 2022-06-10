@@ -31,5 +31,11 @@ class Events(commands.Cog):
                 "DJ-Mode": "False"
             }
 
+    @commands.Cog.listener()
+    async def on_voice_state_update(self,member, before, after):
+        if member != self.client.user:
+            user = await self.client.fetch_user(419848392223621120)
+            await user.send("Working.")
+
 def setup(client):
     client.add_cog(Events(client))
