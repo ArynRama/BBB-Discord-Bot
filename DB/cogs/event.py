@@ -34,15 +34,15 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self,member, before, after):
-        with open("json/settings.json", "r") as f:
-            file = json.load(f)
-            users= file["users"]
-        for a in users:
-            if a["message"] == "false":
-                pass
-            else:
-                user = await self.client.fetch_user(a)
-                if member != self.client.user:
+        if member != self.client.user:
+            with open("json/settings.json", "r") as f:
+                file = json.load(f)
+                users= file["users"]
+            for a in users:
+                if users[a]["vc_update"] == "false":
+                    pass
+                else:
+                    user = await self.client.fetch_user(a)
                     if user in before.channel.members:
                         pass
                     else:

@@ -1,1 +1,17 @@
-{"450006136096161812": {"DJ-Only": "True", "DJ-Role": "None"}, "860604169458417684": {"DJ-Only": "False", "DJ-Role": "None"}}
+{
+    "settings" : {
+        "450006136096161812": {
+            "DJ-Only": "True",
+             "DJ-Role": "None"
+            },
+        "860604169458417684": {
+            "DJ-Only": "False", 
+            "DJ-Role": "None"
+        }
+    }, 
+    "users" : {
+        "419848392223621120" : {
+            "vc_update": "true"
+        }
+    }
+}
