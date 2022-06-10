@@ -132,5 +132,6 @@ class Dev(commands.Cog):
                     users[str(member.id)] = {
                         "vc_update": "false"
                     }
+                    json.dump(users,f)
 def setup(client):
     client.add_cog(Dev(client))
