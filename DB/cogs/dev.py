@@ -119,5 +119,18 @@ class Dev(commands.Cog):
             title=f"Added {args.lower()}.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
         
+    @cogs.command()
+    async def users(self, ctx: commands.Context):
+        with open("DB/json/settings.json", "r") as f:
+            users = json.load(f)["users"]
+        members = self.client.get_all_members()
+        for member in members:
+            if str(member.id) in users:
+                pass
+            else:
+                with open("DB/json/settings.json", "w") as f:
+                    users[str(member.id)] = {
+                        "vc_update": "false"
+                    }
 def setup(client):
     client.add_cog(Dev(client))
