@@ -7,7 +7,7 @@ from discord.ext import commands
 from essential.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
-version = "2.0.0beta"
+version = "2.4.0"
 intents = discord.Intents.all()
 tracemalloc.start()
 dotenv.load_dotenv()

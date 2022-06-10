@@ -25,9 +25,9 @@ class Events(commands.Cog):
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        with open("json/settings.json", "r") as f:
+        with open("DB/json/settings.json", "r") as f:
             file = json.load(f)
-        with open("json/settings.json", "w") as f:
+        with open("DB/json/settings.json", "w") as f:
             file["settings"][str(guild.id)] = {
                 "DJ-Mode": "False"
             }
@@ -35,7 +35,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self,member, before, after):
         if member != self.client.user:
-            with open("json/settings.json", "r") as f:
+            with open("DB/json/settings.json", "r") as f:
                 file = json.load(f)
                 users= file["users"]
             for a in users:
