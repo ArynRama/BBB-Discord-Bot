@@ -120,18 +120,18 @@ class Dev(commands.Cog):
         await ctx.send(embed=embed, delete_after=5)
         
     @cogs.command()
-    async def users(self, ctx: commands.Context):
+    async def users(self):
         with open("DB/json/settings.json", "r") as f:
             users = json.load(f)["users"]
-        members = self.client.get_all_members()
-        for member in members:
-            if str(member.id) in users:
-                pass
-            else:
-                with open("DB/json/settings.json", "w") as f:
-                    users[str(member.id)] = {
-                        "vc_update": "false"
-                    }
-                    json.dump(users,f)
+        for guild in self.client.guilds:
+            for member in guild.members:
+                if str(member.id) in users:
+                    pass
+                else:
+                    with open("DB/json/settings.json", "w") as f:
+                        users[str(member.id)] = {
+                            "vc_update": "false"
+                        }
+                        json.dump(users,f)
 def setup(client):
     client.add_cog(Dev(client))
