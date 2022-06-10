@@ -25,17 +25,29 @@ class Events(commands.Cog):
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        with open("json/settings.json") as f:
+        with open("json/settings.json", "r") as f:
             file = json.load(f)
-            file[guild.id] = {
+        with open("json/settings.json", "w") as f:
+            file["settings"][str(guild.id)] = {
                 "DJ-Mode": "False"
             }
 
     @commands.Cog.listener()
     async def on_voice_state_update(self,member, before, after):
-        if member != self.client.user:
-            user = await self.client.fetch_user(419848392223621120)
-            await user.send("Working.")
+        with open("json/settings.json", "r") as f:
+            file = json.load(f)
+            users= file["users"]
+        for a in users:
+            if a["message"] == "false":
+                pass
+            else:
+                user = await self.client.fetch_user(a)
+                if member != self.client.user:
+                    if user in before.channel.members:
+                        pass
+                    else:
+                        embed = discord.Embed(title=f"{member.user} has joined {after.channel.name}.")
+                        await user.send(embed=embed)
 
 def setup(client):
     client.add_cog(Events(client))
