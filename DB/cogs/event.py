@@ -41,19 +41,22 @@ class Events(commands.Cog):
                 users= file["users"]
             if isinstance(before.channel, NoneType):
                 for a in users:
-                    if users[a]["vc_update"] == "false":
+                    user = await self.client.fetch_user(a)
+                    if user == member:
                         pass
                     else:
-                        user = await self.client.fetch_user(a)
-                        if isinstance(before.channel, NoneType):
-                            userlist = []
-                        else:
-                            userlist = before.channel.members
-                        if user in userlist:
+                        if users[a]["vc_update"] == "false":
                             pass
                         else:
-                            embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
-                            await user.send(embed=embed)
+                            if isinstance(before.channel, NoneType):
+                                userlist = []
+                            else:
+                                userlist = before.channel.members
+                            if user in userlist:
+                                pass
+                            else:
+                                embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
+                                await user.send(embed=embed)
             else:
                 pass
 
