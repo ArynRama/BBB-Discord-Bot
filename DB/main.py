@@ -21,8 +21,8 @@ class clients(commands.Bot):
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
         print('------')
-
 client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
+
 class LoadCogs:
     extentions = [
         "music",
