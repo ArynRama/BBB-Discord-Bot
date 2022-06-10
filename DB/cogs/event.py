@@ -1,3 +1,4 @@
+from types import NoneType
 import discord
 import json
 from essential.config import botcolor
@@ -43,7 +44,7 @@ class Events(commands.Cog):
                     pass
                 else:
                     user = await self.client.fetch_user(a)
-                    if before.channel.members == []:
+                    if isinstance(before.channel.members, NoneType) == []:
                         userlist = []
                     else:
                         userlist = before.channel.members
