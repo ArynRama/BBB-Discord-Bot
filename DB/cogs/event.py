@@ -44,7 +44,7 @@ class Events(commands.Cog):
                     pass
                 else:
                     user = await self.client.fetch_user(a)
-                    if isinstance(before.channel.members, NoneType) == []:
+                    if isinstance(before.channel, NoneType):
                         userlist = []
                     else:
                         userlist = before.channel.members
