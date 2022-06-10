@@ -39,7 +39,7 @@ class Events(commands.Cog):
             with open("DB/json/settings.json", "r") as f:
                 file = json.load(f)
                 users= file["users"]
-            if isinstance(before.channel.name, NoneType):
+            if isinstance(before.channel, NoneType):
                 for a in users:
                     if users[a]["vc_update"] == "false":
                         pass
