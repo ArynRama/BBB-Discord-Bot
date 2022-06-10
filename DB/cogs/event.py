@@ -43,10 +43,14 @@ class Events(commands.Cog):
                     pass
                 else:
                     user = await self.client.fetch_user(a)
-                    if user in before.channel.members:
+                    if before.channel.members == []:
+                        userlist = []
+                    else:
+                        userlist = before.channel.members
+                    if user in userlist or userlist==[]:
                         pass
                     else:
-                        embed = discord.Embed(title=f"{member.user} has joined {after.channel.name}.")
+                        embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
                         await user.send(embed=embed)
 
 def setup(client):
