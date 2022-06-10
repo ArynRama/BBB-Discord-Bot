@@ -48,7 +48,7 @@ class Events(commands.Cog):
                         userlist = []
                     else:
                         userlist = before.channel.members
-                    if user in userlist or userlist==[]:
+                    if user in userlist:
                         pass
                     else:
                         embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
