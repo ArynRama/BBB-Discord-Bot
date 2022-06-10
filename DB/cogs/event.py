@@ -39,20 +39,23 @@ class Events(commands.Cog):
             with open("DB/json/settings.json", "r") as f:
                 file = json.load(f)
                 users= file["users"]
-            for a in users:
-                if users[a]["vc_update"] == "false":
-                    pass
-                else:
-                    user = await self.client.fetch_user(a)
-                    if isinstance(before.channel, NoneType):
-                        userlist = []
-                    else:
-                        userlist = before.channel.members
-                    if user in userlist:
+            if isinstance(before.channel.name, NoneType):
+                for a in users:
+                    if users[a]["vc_update"] == "false":
                         pass
                     else:
-                        embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
-                        await user.send(embed=embed)
+                        user = await self.client.fetch_user(a)
+                        if isinstance(before.channel, NoneType):
+                            userlist = []
+                        else:
+                            userlist = before.channel.members
+                        if user in userlist:
+                            pass
+                        else:
+                            embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
+                            await user.send(embed=embed)
+            else:
+                pass
 
 def setup(client):
     client.add_cog(Events(client))
