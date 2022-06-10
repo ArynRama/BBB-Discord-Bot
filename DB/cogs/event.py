@@ -48,11 +48,7 @@ class Events(commands.Cog):
                         if users[a]["vc_update"] == "false":
                             pass
                         else:
-                            if isinstance(before.channel, NoneType):
-                                userlist = []
-                            else:
-                                userlist = before.channel.members
-                            if user in userlist:
+                            if user in after.channel.members:
                                 pass
                             else:
                                 embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
