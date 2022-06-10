@@ -119,7 +119,7 @@ class Dev(commands.Cog):
             title=f"Added {args.lower()}.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
         
-    @cogs.command()
+    @commands.command()
     async def users(self):
         with open("DB/json/settings.json", "r") as f:
             users = json.load(f)["users"]
@@ -133,5 +133,6 @@ class Dev(commands.Cog):
                             "vc_update": "false"
                         }
                         json.dump(users,f)
+                        
 def setup(client):
     client.add_cog(Dev(client))
