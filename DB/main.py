@@ -1,6 +1,7 @@
 import os
 import dotenv
 import discord
+import psycopg2
 import tracemalloc
 from discord import client
 from discord.ext import commands
@@ -21,9 +22,14 @@ class clients(commands.Bot):
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
         print('------')
+
+    database_url = os.environ["DATABASE_URL"]
+    conn = psycopg2.connect(database_url, sslmode='require')
+    
 client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
 
 class LoadCogs:
+
     extentions = [
         "music",
         "mischief"
@@ -58,4 +64,5 @@ class LoadCogs:
             print('Failed to load extension {}\n{}'.format(
                 ext, exc))
     print("------")
+
 client.run(str(os.getenv("token")))
