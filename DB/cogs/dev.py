@@ -1,6 +1,5 @@
-import json
-import discord
 import sys
+import discord
 from os import listdir
 from discord.ext import commands
 from os.path import isfile, join
@@ -20,32 +19,12 @@ class Dev(commands.Cog):
     async def on_ready(self):
         print("Dev has been loaded.")
         guilds = self.client.guilds
-        if sys.platform.__contains__("win"):
-            with open("DB/json/settings.json", "r") as f:
-                settings: dict = json.load(f)
-            for i in guilds:
-                if str(i.id) in settings:
-                    pass
-                else:
-                    settings[i.id] = {
-                        "DJ-Only": "False",
-                        "DJ-Role": "None"
-                    }
-                    with open("DB/json/settings.json", "w") as f:
-                        json.dump(settings, f)
-        elif sys.platform.__contains__("linux"):
-            with open("/app/DB/json/settings.json", "r") as f:
-                settings: dict = json.load(f)
-            for i in guilds:
-                if str(i.id) in settings:
-                    pass
-                else:
-                    settings[i.id] = {
-                        "DJ-Only": "False",
-                        "DJ-Role": "None"
-                    }
-                    with open("/app/DB/json/settings.json", "w") as f:
-                        json.dump(settings, f)
+        servers = self.db.child("servers").get().val()
+        for i in guilds:
+            if str(i.id) in servers:
+                pass
+            else:
+                self.db.child("servers").child(str(i.id)).set({"DJ-Only": "False", "DJ-Role": "None"})
 
     @commands.command(aliases=["shutdown", "logout"])
     async def kill(self, ctx: commands.Context):

@@ -2,7 +2,6 @@ import re
 import typing
 import asyncio
 import discord
-from httpx import delete
 import wavelink
 import youtubesearchpython
 from typing import Optional

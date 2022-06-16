@@ -1,8 +1,7 @@
-from types import NoneType
 import discord
-import json
-from essential.config import botcolor
+from types import NoneType
 from discord.ext import commands
+from essential.config import botcolor
 
 class Events(commands.Cog):
     def __init__(self, client):
@@ -26,19 +25,12 @@ class Events(commands.Cog):
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        with open("DB/json/settings.json", "r") as f:
-            file = json.load(f)
-        with open("DB/json/settings.json", "w") as f:
-            file["settings"][str(guild.id)] = {
-                "DJ-Mode": "False"
-            }
+        self.db.child("servers").child(str(guild.id)).set({"DJ-Mode": "False"})
 
     @commands.Cog.listener()
     async def on_voice_state_update(self,member, before, after):
         if member != self.client.user:
-            with open("DB/json/settings.json", "r") as f:
-                file = json.load(f)
-                users= file["users"]
+            users = self.db.child("users").get().val()
             if isinstance(before.channel, NoneType):
                 for a in users:
                     user = await self.client.fetch_user(a)
