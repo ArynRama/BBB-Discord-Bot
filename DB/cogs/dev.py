@@ -108,7 +108,7 @@ class Dev(commands.Cog):
                 else:
                     self.client.db.child('users').child(str(member.id)).set(
                         {'dj': 'False', 'vc_update': 'False'}, self.client.idToken)
-                    await asyncio.sleep(2)
+                await asyncio.sleep(2)
         embed = discord.Embed(title="Updated users.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
 
