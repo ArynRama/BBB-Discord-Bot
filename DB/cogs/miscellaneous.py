@@ -1,5 +1,4 @@
 import asyncio
-from typing import Optional
 import discord
 from discord.ext import commands
 
@@ -29,7 +28,7 @@ class Miscellaneous(commands.Cog):
             await ctx.send(user.mention)
             await asyncio.sleep(0.5)
     
-    @commands.commands(aliases=["vcu","vu","voiceupdate","update"])
+    @commands.command(aliases=["vcu","vu","voiceupdate","update"])
     async def voiceupdate(self, ctx, user: discord.Member = None, arg: str = "toggle"):
         author = ctx.author.id
         if user == None:
