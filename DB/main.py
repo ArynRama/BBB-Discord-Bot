@@ -44,7 +44,7 @@ class LoadCogs:
 
     extentions = [
         "music",
-        "mischief"
+        "miscellaneous"
     ]
     dependencies = [
         "event",

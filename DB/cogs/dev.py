@@ -8,7 +8,7 @@ class Dev(commands.Cog):
         self.client = client
     
     async def cog_check(self, ctx: commands.Context):
-        if str(ctx.author.id) in devs(self):
+        if str(ctx.author.id) in devs():
             return True
         else:
             return False
