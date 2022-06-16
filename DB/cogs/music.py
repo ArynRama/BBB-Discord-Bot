@@ -306,7 +306,7 @@ class Music(commands.Cog):
     async def volume(self, ctx: commands.Context, volume):
         player = ctx.voice_client
         if volume == "":
-            await ctx.send(player.volume)
+            await ctx.send(player.volume, delete_after=5)
         elif float(volume):
             volume = float(volume)
             await player.set_volume(volume)

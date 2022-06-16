@@ -1,3 +1,4 @@
+import asyncio
 import discord
 from os import listdir
 from discord.ext import commands
@@ -107,9 +108,10 @@ class Dev(commands.Cog):
                 else:
                     self.client.db.child('users').child(str(member.id)).set(
                         {'dj': 'False', 'vc_update': 'False'}, self.client.idToken)
+                    await asyncio.sleep(2)
         embed = discord.Embed(title="Updated users.", color=botcolor())
-        await ctx.send(embed=embed)
-    
+        await ctx.send(embed=embed, delete_after=5)
+
     @commands.command()
     async def update_servers(self, ctx):
         guilds = self.client.db.child('servers').get(self.client.idToken).val()
@@ -120,7 +122,7 @@ class Dev(commands.Cog):
                 self.client.db.child('users').child(str(guild.id)).set(
                     {'DJ-Only': 'False', 'DJ-Role': 'None'}, self.client.idToken)
         embed = discord.Embed(title="Updated servers.", color=botcolor())
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=5)
 
 def setup(client):
     client.add_cog(Dev(client))

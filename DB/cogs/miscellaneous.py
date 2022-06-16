@@ -48,7 +48,7 @@ class Miscellaneous(commands.Cog):
                 else:
                     embed = discord.Embed(
                         title=f"{arg.title()} is not a valid argument.", color=botcolor())
-                    await ctx.send(embed=embed)
+                    await ctx.send(embed=embed, delete_after=5)
             elif value == "True":
                 if arg == "toggle":
                     self.client.db.child("users").child(str(author)).child(
@@ -58,7 +58,7 @@ class Miscellaneous(commands.Cog):
                         "vc_update").set("False"), self.client.auth["idToken"]
                 else:
                     embed = discord.Embed(title=f"{arg.title()} is not a valid argument.", color=botcolor())
-                    await ctx.send(embed=embed)
+                    await ctx.send(embed=embed, delete_after=5)
             else:
                 if user == None:
                     embed = discord.Embed(title=f"User {author} has invalid vc_update value({value}).", color=botcolor())
