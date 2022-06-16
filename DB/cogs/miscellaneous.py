@@ -30,7 +30,7 @@ class Miscellaneous(commands.Cog):
             await asyncio.sleep(0.5)
     
     @commands.commands(aliases=["vcu","vu","voiceupdate","update"])
-    async def voiceupdate(self, ctx: commands.Context, user: discord.Member = None, arg: str = "toggle"):
+    async def voiceupdate(self, ctx, user: discord.Member = None, arg: str = "toggle"):
         author = ctx.author.id
         if user == None:
             subject = ctx.author.id

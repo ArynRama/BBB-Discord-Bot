@@ -17,9 +17,9 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
 def botcolor():
-    r = db.child('settings').child('botcolor1').get().val()
-    g = db.child('settings').child('botcolor2').get().val()
-    b = db.child('settings').child('botcolor3').get().val()
+    r = int(db.child('settings').child('botcolor1').get().val())
+    g = int(db.child('settings').child('botcolor2').get().val())
+    b = int(db.child('settings').child('botcolor3').get().val())
     color = Color.from_rgb(r, g, b)
     return color
 
