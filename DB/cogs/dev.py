@@ -19,12 +19,12 @@ class Dev(commands.Cog):
     async def on_ready(self):
         print("Dev has been loaded.")
         guilds = self.client.guilds
-        servers = self.db.child("servers").get().val()
+        servers = self.client.db.child("servers").get().val()
         for i in guilds:
             if str(i.id) in servers:
                 pass
             else:
-                self.db.child("servers").child(str(i.id)).set({"DJ-Only": "False", "DJ-Role": "None"})
+                self.client.db.child("servers").child(str(i.id)).set({"DJ-Only": "False", "DJ-Role": "None"})
 
     @commands.command(aliases=["shutdown", "logout"])
     async def kill(self, ctx: commands.Context):

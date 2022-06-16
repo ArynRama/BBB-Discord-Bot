@@ -25,12 +25,12 @@ class Events(commands.Cog):
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        self.db.child("servers").child(str(guild.id)).set({"DJ-Mode": "False"})
+        self.client.db.child("servers").child(str(guild.id)).set({"DJ-Mode": "False"})
 
     @commands.Cog.listener()
     async def on_voice_state_update(self,member, before, after):
         if member != self.client.user:
-            users = self.db.child("users").get().val()
+            users = self.client.db.child("users").get().val()
             if isinstance(before.channel, NoneType):
                 for a in users:
                     user = await self.client.fetch_user(a)
