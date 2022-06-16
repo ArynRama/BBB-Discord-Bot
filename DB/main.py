@@ -5,6 +5,7 @@ import pyrebase
 import tracemalloc
 from discord import client
 from discord.ext import commands
+from essential.config import prefix
 from essential.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
@@ -35,10 +36,12 @@ class clients(commands.Bot):
     }
 
     firebase = pyrebase.initialize_app(firebaseConfig)
-
+    auth = firebase.auth().sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
     db = firebase.database()
+    idToken = auth['idToken']
+
     
-client = clients(command_prefix="-",description=description, intent=intents, help_command=HelpCmd())
+client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
 
 class LoadCogs:
 

@@ -36,24 +36,27 @@ class Miscellaneous(commands.Cog):
             subject = ctx.author.id
         else:
             subject = user.id
-        ids = self.client.db.child("users").get().val()
+        ids = self.client.db.child("users").get(self.client.auth["idToken"]).val()
         if subject in ids:
-            value = ids = self.client.db.child("users").child(str(author)).child("vc_update").get().val()
+            value = ids = self.client.db.child("users").child(str(author)).child("vc_update").get(self.client.auth["idToken"]).val()
             if value == "False":
                 if arg == "toggle":
-                    self.client.db.child("users").child(str(author)).child("vc_update").set("True")
+                    self.client.db.child("users").child(str(author)).child(
+                        "vc_update").set("True", self.client.auth["idToken"])
                 elif arg == "True":
                     self.client.db.child("users").child(
-                        str(author)).child("vc_update").set("True")
+                        str(author)).child("vc_update").set("True", self.client.auth["idToken"])
                 else:
                     embed = discord.Embed(
                         title=f"{arg.title()} is not a valid argument.", color=botcolor())
                     await ctx.send(embed=embed)
             elif value == "True":
                 if arg == "toggle":
-                    self.client.db.child("users").child(str(author)).child("vc_update").set("False")
+                    self.client.db.child("users").child(str(author)).child(
+                        "vc_update").set("False", self.client.auth["idToken"])
                 elif arg == "False":
-                    self.client.db.child("users").child(str(author)).child("vc_update").set("False")
+                    self.client.db.child("users").child(str(author)).child(
+                        "vc_update").set("False"), self.client.auth["idToken"]
                 else:
                     embed = discord.Embed(title=f"{arg.title()} is not a valid argument.", color=botcolor())
                     await ctx.send(embed=embed)
@@ -62,7 +65,7 @@ class Miscellaneous(commands.Cog):
                     embed = discord.Embed(title=f"User {author} has invalid vc_update value({value}).", color=botcolor())
                 else:
                     embed = discord.Embed(title=f"User {user.id} has invalid vc_update value({value}).", color=botcolor())
-                devs = self.client.db.child("devs").get().val()
+                devs = self.client.db.child("devs").get(self.client.auth["idToken"]).val()
                 for dev in devs:
                     await self.client.fetch_user(dev).send(embed)
 
