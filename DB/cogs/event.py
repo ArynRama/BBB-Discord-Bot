@@ -26,6 +26,11 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         self.client.db.child("servers").child(str(guild.id)).set({"DJ-Mode": "False"})
+    
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        self.client.db.child("servers").child(
+            str(member.id)).set({'dj': 'False', 'vc_update': 'False'})
 
     @commands.Cog.listener()
     async def on_voice_state_update(self,member, before, after):
@@ -37,13 +42,13 @@ class Events(commands.Cog):
                     if user == member:
                         pass
                     else:
-                        if users[a]["vc_update"] == "false":
+                        if self.client.db.child('users').child(str(a)).child('vc_update').get().val() == "false":
                             pass
                         else:
                             if user in after.channel.members:
                                 pass
                             else:
-                                embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.")
+                                embed = discord.Embed(title=f"{member.display_name} has joined {after.channel.name}.",color=botcolor())
                                 await user.send(embed=embed)
             else:
                 pass

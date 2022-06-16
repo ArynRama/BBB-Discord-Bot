@@ -96,7 +96,7 @@ class Music(commands.Cog):
     async def leave(self, ctx: commands.Context):
         """Makes the bot leave the voice channel."""
         player = ctx.voice_client
-        if str(ctx.author.id) in devs():
+        if str(ctx.author.id) in devs(self):
             await player.disconnect()
             embed = discord.Embed(color=botcolor(), title = "Disconnected.")
             await ctx.send(embed = embed, delete_after=5)
@@ -114,7 +114,7 @@ class Music(commands.Cog):
         if search == None:
             embed = discord.Embed(title="You must include a song.",color=botcolor())
             return await ctx.send(embed=embed, delete_after=5)
-        if ctx.author.voice or str(ctx.author.id) in devs():
+        if ctx.author.voice or str(ctx.author.id) in devs(self):
             if ctx.voice_client:
                 player = ctx.voice_client
                 if player.is_playing():
@@ -137,7 +137,7 @@ class Music(commands.Cog):
         if search == None:
             embed = discord.Embed(title="You must include a song.",color=botcolor())
             return await ctx.send(embed=embed, delete_after=5)
-        if ctx.author.voice or ctx.author in devs():
+        if ctx.author.voice or ctx.author in devs(self):
             if ctx.voice_client:
                 player = ctx.voice_client
                 if ctx.voice_client.is_playing:
@@ -159,7 +159,7 @@ class Music(commands.Cog):
     async def pause(self, ctx: commands.Context):
         """Pauses the music."""
         player = ctx.voice_client
-        if ctx.author.voice or str(ctx.author.id) in devs():
+        if ctx.author.voice or str(ctx.author.id) in devs(self):
             if player.is_playing():
                 embed = discord.Embed(color=botcolor(), title = "Pausing...")
                 await ctx.send(embed = embed, delete_after=5)
@@ -174,7 +174,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def resume(self, ctx: commands.Context):
         """Resumes the music"""
-        if ctx.author.voice or str(ctx.author.id) in devs():
+        if ctx.author.voice or str(ctx.author.id) in devs(self):
             player = ctx.voice_client
             if player.is_paused():
                 embed = discord.Embed(color=botcolor(), title = "Resuming...")
@@ -190,7 +190,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def stop(self, ctx: commands.Context):
         """Stops the music."""
-        if ctx.author.voice or str(ctx.author.id) in devs():
+        if ctx.author.voice or str(ctx.author.id) in devs(self):
             player = ctx.voice_client
             if player.is_playing() or player.is_paused():
                 embed = discord.Embed(color=botcolor(), title = "Stoping.")

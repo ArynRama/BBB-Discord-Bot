@@ -3,14 +3,14 @@ import discord
 from os import listdir
 from discord.ext import commands
 from os.path import isfile, join
-from . import music, event, mischief
+from . import miscellaneous, music, event
 from essential.config import botcolor, devs
 class Dev(commands.Cog):
     def __init__(self, client):
         self.client = client
     
     async def cog_check(self, ctx: commands.Context):
-        if str(ctx.author.id) in devs():
+        if str(ctx.author.id) in devs(self):
             return True
         else:
             return False
@@ -97,6 +97,27 @@ class Dev(commands.Cog):
         embed = discord.Embed(
             title=f"Added {args.lower()}.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
+    
+    @commands.command()
+    async def update_users(self, ctx: commands.Context):
+        users = self.client.db.child('users').get().val()
+        for guild in self.client.guilds:
+            for member in guild.members:
+                if member.id in users:
+                    pass
+                else:
+                    self.client.db.child('users').child(str(member.id)).set(
+                        {'dj': 'False', 'vc_update': 'False'})
+    
+    @commands.command()
+    async def update_servers(self, ctx: commands.Context):
+        guilds = self.client.db.child('servers').get().val()
+        for guild in self.client.guilds:
+            if guild.id in guilds:
+                pass
+            else:
+                self.client.db.child('users').child(str(guild.id)).set(
+                    {'DJ-Only': 'False', 'DJ-Role': 'None'})
 
 def setup(client):
     client.add_cog(Dev(client))
