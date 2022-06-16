@@ -1,9 +1,7 @@
-import sys
 import discord
 from os import listdir
 from discord.ext import commands
 from os.path import isfile, join
-from . import miscellaneous, music, event
 from essential.config import botcolor, devs
 class Dev(commands.Cog):
     def __init__(self, client):
@@ -99,7 +97,7 @@ class Dev(commands.Cog):
         await ctx.send(embed=embed, delete_after=5)
     
     @commands.command()
-    async def update_users(self, ctx: commands.Context):
+    async def update_users(self, ctx):
         users = self.client.db.child('users').get().val()
         for guild in self.client.guilds:
             for member in guild.members:
@@ -108,9 +106,11 @@ class Dev(commands.Cog):
                 else:
                     self.client.db.child('users').child(str(member.id)).set(
                         {'dj': 'False', 'vc_update': 'False'})
+        embed = discord.Embed(title="Updated users.", color=botcolor())
+        await ctx.send(embed=embed)
     
     @commands.command()
-    async def update_servers(self, ctx: commands.Context):
+    async def update_servers(self, ctx):
         guilds = self.client.db.child('servers').get().val()
         for guild in self.client.guilds:
             if guild.id in guilds:
@@ -118,6 +118,8 @@ class Dev(commands.Cog):
             else:
                 self.client.db.child('users').child(str(guild.id)).set(
                     {'DJ-Only': 'False', 'DJ-Role': 'None'})
+        embed = discord.Embed(title="Updated servers.", color=botcolor())
+        await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Dev(client))
