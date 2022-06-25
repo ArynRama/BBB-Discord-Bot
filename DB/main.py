@@ -4,6 +4,7 @@ import discord
 import pyrebase
 import tracemalloc
 from discord import client
+from time import time, sleep
 from discord.ext import commands
 from essential.config import prefix
 from essential.help import HelpCmd
@@ -36,10 +37,17 @@ class clients(commands.Bot):
     }
 
     firebase = pyrebase.initialize_app(firebaseConfig)
-    auth = firebase.auth().sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
+    authentication = firebase.auth()
+    auth = authentication.sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
     db = firebase.database()
     idToken = auth['idToken']
 
+
+    while True:
+        sleep(60 - time() % 60)
+
+        authentication.refresh(auth['refreshToken'])
+        idToken = auth['idToken']
     
 client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
 
