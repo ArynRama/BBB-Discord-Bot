@@ -1,6 +1,6 @@
 import os
 import pyrebase
-from asyncio import sleep, time
+from time import sleep, time
 
 firebaseConfig = {
     "apiKey": "AIzaSyB1ujCtmCOnd7aMft806lJguZV3gXVt6l0",
