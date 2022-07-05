@@ -36,11 +36,10 @@ class Miscellaneous(commands.Cog):
             subject = user.id
         ids = self.client.db.child("users").get().val()
         if subject in ids:
-            value = ids = self.client.db.child("users").child(str(author)).child("vc_update").get().val()
+            value = self.client.db.child("users").child(str(author)).child("vc_update").get().val()
             if value == "False":
                 if arg == "toggle":
-                    self.client.db.child("users").child(str(author)).child(
-                        "vc_update").set("True")
+                    self.client.db.child("users").child(str(author)).child("vc_update").set("True")
                 elif arg == "True":
                     self.client.db.child("users").child(
                         str(author)).child("vc_update").set("True")
