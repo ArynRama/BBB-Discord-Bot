@@ -28,7 +28,7 @@ class Miscellaneous(commands.Cog):
             await asyncio.sleep(0.5)
     
     @commands.command(aliases=["vcu","vu","voicechannelupdate","update"])
-    async def voiceupdate(self, ctx, user: discord.Member = None, arg: str = "toggle"):
+    async def voiceupdate(self, ctx, arg: str = "toggle", user: discord.Member = None):
         author = ctx.author.id
         if user == None:
             subject = ctx.author.id
@@ -63,9 +63,7 @@ class Miscellaneous(commands.Cog):
                     embed = discord.Embed(title=f"User {author} has invalid vc_update value({value}).", color=botcolor())
                 else:
                     embed = discord.Embed(title=f"User {user.id} has invalid vc_update value({value}).", color=botcolor())
-                devs = self.client.db.child("devs").get().val()
-                for dev in devs:
-                    await self.client.fetch_user(dev).send(embed)
+                ctx.send(embed=embed, delete_after=5)
 
     
 
