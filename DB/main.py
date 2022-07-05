@@ -6,6 +6,7 @@ import tracemalloc
 from discord import client
 from discord.ext import commands
 from essential.config import prefix
+from essential.database import datab, firebases, authen, authentic
 from essential.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
@@ -24,21 +25,10 @@ class clients(commands.Bot):
         print('Owner: ArynRama#6043')
         print('------')
 
-    firebaseConfig = {
-        "apiKey": "AIzaSyB1ujCtmCOnd7aMft806lJguZV3gXVt6l0",
-        "authDomain": "discord-bot-database-b44ec.firebaseapp.com",
-        "databaseURL": "https://discord-bot-database-b44ec-default-rtdb.firebaseio.com",
-        "projectId": "discord-bot-database-b44ec",
-        "storageBucket": "discord-bot-database-b44ec.appspot.com",
-        "messagingSenderId": "769471483502",
-        "appId": "1:769471483502:web:579519c2b0e9b39197a07f",
-        "measurementId": "G-RPC6GZKFNR"
-    }
-
-    firebase = pyrebase.initialize_app(firebaseConfig)
-    authentication = firebase.auth()
-    auth = authentication.sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
-    db = firebase.database()
+    firebase = firebases
+    authentication = authentic
+    auth = authen
+    db = datab
     
 client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
 

@@ -13,15 +13,15 @@ firebaseConfig = {
     "measurementId": "G-RPC6GZKFNR"
 }
 
-firebase = pyrebase.initialize_app(firebaseConfig)
-authentication = firebase.auth()
-auth = authentication.sign_in_with_email_and_password(
+firebases = pyrebase.initialize_app(firebaseConfig)
+authentic = firebases.auth()
+authen = authentic.sign_in_with_email_and_password(
     os.getenv("FB_Email"), os.getenv("FB_Pass"))
-db = firebase.database()
-idToken = auth['idToken']
+datab = firebases.database()
+idToken = authen['idToken']
 
 while True:
     sleep(60 - time() % 60)
 
-    authentication.refresh(auth['refreshToken'])
-    idToken = auth['idToken']
+    authentic.refresh(authen['refreshToken'])
+    idToken = authen['idToken']
