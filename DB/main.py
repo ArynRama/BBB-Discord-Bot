@@ -8,7 +8,6 @@ from discord import client
 from time import sleep, time
 from discord.ext import commands
 from essential.config import prefix
-from essential.database import datab, firebases, authen, authentic
 from essential.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
@@ -39,16 +38,16 @@ class clients(commands.Bot):
     }
 
     firebase = pyrebase.initialize_app(firebaseConfig)
-    authentication = firebases.auth()
-    auth = authentic.sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
-    db = firebases.database()
-    idToken = authen['idToken']
+    authentication = firebase.auth()
+    auth = authentication.sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
+    db = firebase.database()
+    idToken = auth['idToken']
 
     def reload():
         while True:
             sleep(60 - time() % 60)
-            authentic.refresh(authen['refreshToken'])
-            clients.idToken = authen['idToken']
+            clients.authentication.refresh(clients.auth['refreshToken'])
+            clients.idToken = clients.auth['idToken']
 
     thread = threading.Thread(target=reload)
     thread.start()
