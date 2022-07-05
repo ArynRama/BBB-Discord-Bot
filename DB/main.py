@@ -43,15 +43,6 @@ class clients(commands.Bot):
     db = firebase.database()
     idToken = auth['idToken']
 
-    def reload():
-        while True:
-            sleep(60 - time() % 60)
-            clients.authentication.refresh(clients.auth['refreshToken'])
-            clients.idToken = clients.auth['idToken']
-
-    thread = threading.Thread(target=reload)
-    thread.start()
-
 client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
 
 class LoadCogs:
