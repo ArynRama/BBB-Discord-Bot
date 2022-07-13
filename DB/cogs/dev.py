@@ -18,13 +18,13 @@ class Dev(commands.Cog):
     async def on_ready(self):
         print("Dev has been loaded.")
         guilds = self.client.guilds
-        servers = self.client.db.child("servers").get(self.client.idToken).val()
+        servers = self.client.db.child("servers").get().val()
         for i in guilds:
             if str(i.id) in servers:
                 pass
             else:
                 self.client.db.child("servers").child(str(i.id)).set(
-                    {"DJ-Only": "False", "DJ-Role": "None"}, self.client.idToken)
+                    {"DJ-Only": "False", "DJ-Role": "None"})
 
     @commands.command(aliases=["shutdown", "logout"])
     async def kill(self, ctx: commands.Context):
@@ -100,27 +100,27 @@ class Dev(commands.Cog):
     
     @commands.command()
     async def update_users(self, ctx):
-        users = self.client.db.child('users').get(self.client.idToken).val()
+        users = self.client.db.child('users').get().val()
         for guild in self.client.guilds:
             for member in guild.members:
                 if member.id in users:
                     pass
                 else:
                     self.client.db.child('users').child(str(member.id)).set(
-                        {'dj': 'False', 'vc_update': 'False'}, self.client.idToken)
+                        {'dj': 'False', 'vc_update': 'False'})
                 await asyncio.sleep(2)
         embed = discord.Embed(title="Updated users.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
 
     @commands.command()
     async def update_servers(self, ctx):
-        guilds = self.client.db.child('servers').get(self.client.idToken).val()
+        guilds = self.client.db.child('servers').get().val()
         for guild in self.client.guilds:
             if guild.id in guilds:
                 pass
             else:
                 self.client.db.child('users').child(str(guild.id)).set(
-                    {'DJ-Only': 'False', 'DJ-Role': 'None'}, self.client.idToken)
+                    {'DJ-Only': 'False', 'DJ-Role': 'None'})
         embed = discord.Embed(title="Updated servers.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
 
