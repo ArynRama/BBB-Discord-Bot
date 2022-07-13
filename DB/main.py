@@ -38,10 +38,7 @@ class clients(commands.Bot):
     }
 
     firebase = pyrebase.initialize_app(firebaseConfig)
-    authentication = firebase.auth()
-    auth = authentication.sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
     db = firebase.database()
-    idToken = auth['idToken']
 
 client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
 
