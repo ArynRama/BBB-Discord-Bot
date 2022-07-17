@@ -38,7 +38,7 @@ class Events(commands.Cog):
             users = self.client.db.child("users").get().val()
             if isinstance(before.channel, NoneType):
                 for a in users:
-                    user = await self.client.fetch_user(a)
+                    user = await self.client.fetch_user(int(a))
                     if user == member:
                         pass
                     else:
