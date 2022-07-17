@@ -25,24 +25,24 @@ class Events(commands.Cog):
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        self.client.db.child("servers").child(str(guild.id)).set({"DJ-Mode": "False"}, self.client.auth['idToken'])
+        self.client.db.child("servers").child(str(guild.id)).set({"DJ-Mode": "False"})
     
     @commands.Cog.listener()
     async def on_member_join(self, member):
         self.client.db.child("servers").child(
-            str(member.id)).set({'dj': 'False', 'vc_update': 'False'}, self.client.idToken)
+            str(member.id)).set({'dj': 'False', 'vc_update': 'False'}, )
 
     @commands.Cog.listener()
     async def on_voice_state_update(self,member, before, after):
         if member != self.client.user:
-            users = self.client.db.child("users").get(self.client.idToken).val()
+            users = self.client.db.child("users").get().val()
             if isinstance(before.channel, NoneType):
                 for a in users:
                     user = await self.client.fetch_user(a)
                     if user == member:
                         pass
                     else:
-                        if self.client.db.child('users').child(str(a)).child('vc_update').get(self.client.idToken).val() == "false":
+                        if self.client.db.child('users').child(str(a)).child('vc_update').get().val() == "false":
                             pass
                         else:
                             if user in after.channel.members:

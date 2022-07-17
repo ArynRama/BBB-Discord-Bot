@@ -5,7 +5,6 @@ import pyrebase
 import threading
 import tracemalloc
 from discord import client
-from time import sleep, time
 from discord.ext import commands
 from essential.config import prefix
 from essential.help import HelpCmd
