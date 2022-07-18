@@ -83,6 +83,8 @@ class LoadCogs:
 client.run(str(os.getenv("token")))
 
 def signal_handler(sig, frame):
+    print('Disconnecting Wavelink.')
+    print('Shutting Down.')
     client.wavelink.disconnect()
 
 signal.signal(signal.SIGTERM, signal_handler)
