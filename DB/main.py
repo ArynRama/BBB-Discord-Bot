@@ -1,7 +1,9 @@
 import os
+import signal
 import dotenv
 import discord
 import pyrebase
+import wavelink
 import threading
 import tracemalloc
 from discord import client
@@ -79,3 +81,10 @@ class LoadCogs:
     print("------")
 
 client.run(str(os.getenv("token")))
+
+def signal_handler(sig, frame):
+    client.wavelink.disconnect()
+
+signal.signal(signal.SIGTERM, signal_handler)
+print('Shutting Down.')
+signal.pause()
