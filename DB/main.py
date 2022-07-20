@@ -30,7 +30,7 @@ class clients(bridge.Bot):
     def get_prefix():
         return commands.when_mentioned_or(prefix())
 
-    command_prefix=get_prefix()
+    command_prefix=get_prefix
 
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
