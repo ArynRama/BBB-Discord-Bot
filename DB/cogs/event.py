@@ -13,9 +13,8 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        print(message.content)
         if message.author != self.client.user:
-            if message.content.startswith(prefix()):
+            if message.content.startswith(prefix()) or message.content.startswith('<@656362368250544128>'):
                 try:
                     await message.delete()
                 except:
