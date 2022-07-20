@@ -1,4 +1,5 @@
 import os
+import json
 import signal
 import discord
 import pyrebase
@@ -23,7 +24,8 @@ class clients(bridge.Bot):
         print('------')
         print(f'Prefix: {prefix()}')
 
-    firebaseConfig = os.getenv("FB_Info")
+    preConfig = os.getenv("FB_Info")
+    firebaseConfig = json.loads(preConfig)
 
     command_prefix=commands.when_mentioned_or(prefix())
 

@@ -1,8 +1,10 @@
 import os
+import json
 import pyrebase
 from discord import Color
 
-firebaseConfig = os.getenv("FB_Info")
+preConf = os.environ("FB_IN")
+firebaseConfig = json.loads(preConf)
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth().sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
