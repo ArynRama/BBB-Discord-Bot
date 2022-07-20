@@ -12,16 +12,15 @@ class Events(commands.Cog):
         print("Events has been loaded.")
 
     @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.author != self.client.user:
-            if message.content.startswith(prefix()) or message.content.startswith('<@656362368250544128>'):
-                try:
-                    await message.delete()
-                except:
-                    embed = discord.Embed(
-                        title="Missing Permission.", color=botcolor())
-                    await message.channel.send(embed=embed, delete_after=5)
-                    raise commands.BotMissingPermissions("DeleteMessages")
+    async def on_command(self, ctx):
+        if ctx.author != self.client.user:
+            try:
+                await ctx.command.delete()
+            except:
+                embed = discord.Embed(
+                    title="Missing Permission.", color=botcolor())
+                await message.channel.send(embed=embed, delete_after=5)
+                raise commands.BotMissingPermissions("DeleteMessages")
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):

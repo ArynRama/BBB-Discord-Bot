@@ -27,7 +27,7 @@ class clients(bridge.Bot):
     preConfig = os.getenv("FB_Info")
     firebaseConfig = json.loads(preConfig)
 
-    command_prefix=commands.when_mentioned_or('-')
+    command_prefix=get_prefix()
 
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
@@ -83,3 +83,6 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 print('Shutting Down.')
 signal.pause()
+
+async def get_prefix():
+    return commands.when_mentioned_or(prefix())
