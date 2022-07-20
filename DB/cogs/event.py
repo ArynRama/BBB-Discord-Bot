@@ -10,11 +10,11 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Events has been loaded.")
-        
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author != self.client.user:
-            if message.content.startswith(self.client.prefix):
+            if message.content.startswith(self.client.command_prefix):
                 try:
                     await message.delete()
                 except:
