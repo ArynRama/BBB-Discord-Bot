@@ -23,7 +23,7 @@ class clients(bridge.Bot):
         print('------')
         print(f'Prefix: {prefix()}')
 
-    firebaseConfig = os.environ("FB_Info")
+    firebaseConfig = os.getenv("FB_Info")
 
     command_prefix=commands.when_mentioned_or(prefix())
 
