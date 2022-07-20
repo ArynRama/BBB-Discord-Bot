@@ -14,7 +14,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author != self.client.user:
-            if message.content.startswith(self.client.command_prefix):
+            if message.content.startswith('-') or message.content.startswith(self.client.user):
                 try:
                     await message.delete()
                 except:
