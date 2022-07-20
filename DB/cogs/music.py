@@ -4,7 +4,7 @@ import asyncio
 import discord
 import wavelink
 from typing import Optional
-from discord.ext import commands
+from discord.ext import commands, bridge
 from essential.player import Player
 from essential.checks import is_dev
 from essential.config import botcolor, devs
@@ -220,7 +220,7 @@ class Music(commands.Cog):
                 if not voice.is_connected():
                     break
 
-    @commands.command(pass_context=True)
+    @bridge.bridge_command(pass_context=True)
     async def queue(self, ctx: commands.Context):
         """View the queue."""
         queue = ctx.voice_client.Queue
