@@ -1,6 +1,6 @@
 import discord
 from types import NoneType
-from discord.ext import commands
+from discord.ext import commands, bridge
 from essential.config import botcolor
 
 class Events(commands.Cog):
@@ -10,11 +10,11 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Events has been loaded.")
-    
+        
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author != self.client.user:
-            if message.content.startswith("-"):
+            if message.content.startswith(self.client.prefix):
                 try:
                     await message.delete()
                 except:

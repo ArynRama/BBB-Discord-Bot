@@ -12,7 +12,7 @@ description = f'''A bot I made for BBB.'''
 version = "2.4.0"
 intents = discord.Intents.all()
 tracemalloc.start()
-class clients(commands.Bot):
+class clients(bridge.Bot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
 
