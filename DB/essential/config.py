@@ -18,7 +18,7 @@ auth = firebase.auth().sign_in_with_email_and_password(os.getenv("FB_Email"), os
 db = firebase.database()
 
 def prefix():
-    return db.child('settings').child('prefix').get(auth["idToken"]).val()
+    return str(db.child('settings').child('prefix').get(auth["idToken"]).val())
 
 def botcolor():
     r = int(db.child('settings').child('botcolor1').get(auth["idToken"]).val())

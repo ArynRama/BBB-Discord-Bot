@@ -34,10 +34,12 @@ class clients(bridge.Bot):
         "measurementId": "G-RPC6GZKFNR"
     }
 
+    command_prefix=commands.when_mentioned_or(prefix())
+
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
 
-client = clients(command_prefix=commands.when_mentioned_or(prefix()),description=description, intent=intents, help_command=HelpCmd())
+client = clients(description=description, intent=intents, help_command=HelpCmd())
 
 class LoadCogs:
 
