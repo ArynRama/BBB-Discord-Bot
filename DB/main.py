@@ -27,7 +27,7 @@ class clients(bridge.Bot):
     preConfig = os.getenv("FB_Info")
     firebaseConfig = json.loads(preConfig)
 
-    command_prefix=commands.when_mentioned_or(prefix())
+    command_prefix=commands.when_mentioned_or('-')
 
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
