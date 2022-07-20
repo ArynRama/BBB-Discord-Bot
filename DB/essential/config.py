@@ -3,7 +3,7 @@ import json
 import pyrebase
 from discord import Color
 
-preConf = os.getenv("FB_IN")
+preConf = os.getenv("FB_Info")
 firebaseConfig = json.loads(preConf)
 
 firebase = pyrebase.initialize_app(firebaseConfig)
