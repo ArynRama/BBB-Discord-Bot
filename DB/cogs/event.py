@@ -1,7 +1,7 @@
 import discord
 from types import NoneType
 from discord.ext import commands, bridge
-from essential.config import botcolor
+from essential.config import botcolor, prefix
 
 class Events(commands.Cog):
     def __init__(self, client):
@@ -13,8 +13,9 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        print(message.content)
         if message.author != self.client.user:
-            if message.content.startswith('-') or message.content.startswith(self.client.user):
+            if message.content.startswith(prefix()):
                 try:
                     await message.delete()
                 except:
