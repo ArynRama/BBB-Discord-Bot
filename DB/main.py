@@ -21,6 +21,7 @@ class clients(commands.Bot):
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
         print('------')
+        print(f'Prefix: {prefix()}')
 
     firebaseConfig = {
         "apiKey": "AIzaSyB1ujCtmCOnd7aMft806lJguZV3gXVt6l0",
@@ -36,7 +37,7 @@ class clients(commands.Bot):
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
 
-client = clients(command_prefix=prefix(),description=description, intent=intents, help_command=HelpCmd())
+client = clients(command_prefix=commands.when_mentioned_or(prefix()),description=description, intent=intents, help_command=HelpCmd())
 
 class LoadCogs:
 
