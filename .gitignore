@@ -1,6 +1,5 @@
 test.py
 test.json
-DB/.env
-.venv
-.venv2
+bbbdbvenv
 __pycache__
+updates.txt

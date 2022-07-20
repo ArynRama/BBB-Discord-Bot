@@ -3,7 +3,6 @@ import typing
 import asyncio
 import discord
 import wavelink
-import youtubesearchpython
 from typing import Optional
 from discord.ext import commands
 from essential.player import Player
@@ -225,22 +224,17 @@ class Music(commands.Cog):
     async def queue(self, ctx: commands.Context):
         """View the queue."""
         queue = ctx.voice_client.Queue
-        if isinstance(queue, wavelink.Queue):
-            if queue.is_empty:
-                embed = discord.Embed(color=botcolor(), title="No songs currently queued.")
-                await ctx.send(embed=embed, delete_after= 5)
-            else:
-                embed = discord.Embed(color=botcolor(), title="Queue")
-                i = 0
-                for a in queue:
-                    a = str(a)
-                    i = i + 1
-                    link = youtubesearchpython.VideosSearch(a,limit=1).result()["result"][0]["link"]
-                    embed.add_field(name=f"**#{i}**  {a}" , value = f"{link}", inline=False)
-                await ctx.send(embed=embed, delete_after= 30)
-        else:
-            embed = discord.Embed(color=botcolor(), title="No songs currently queued.")
-            await ctx.send(embed=embed, delete_after= 5)
+        print(queue)
+        # if isinstance(queue, wavelink.Queue):
+        #     if queue.is_empty:
+        #         embed = discord.Embed(color=botcolor(), title="No songs currently queued.")
+        #         await ctx.send(embed=embed, delete_after= 5)
+        #     else:
+        #         embed = discord.Embed(color=botcolor(), title="Queue")
+        #         await ctx.send(embed=embed, delete_after= 30)
+        # else:
+        #     embed = discord.Embed(color=botcolor(), title="No songs currently queued.")
+        #     await ctx.send(embed=embed, delete_after= 5)
     
     @commands.command(pass_context=True)
     async def skip(self, ctx: commands.Context, index: Optional[int]):

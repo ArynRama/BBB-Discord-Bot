@@ -1,13 +1,10 @@
 import os
 import signal
-import dotenv
 import discord
 import pyrebase
-import wavelink
-import threading
 import tracemalloc
 from discord import client
-from discord.ext import commands
+from discord.ext import commands, bridge
 from essential.config import prefix
 from essential.help import HelpCmd
 
@@ -15,9 +12,7 @@ description = f'''A bot I made for BBB.'''
 version = "2.4.0"
 intents = discord.Intents.all()
 tracemalloc.start()
-dotenv.load_dotenv()
 class clients(commands.Bot):
-    
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
 
@@ -47,7 +42,8 @@ class LoadCogs:
 
     extentions = [
         "music",
-        "miscellaneous"
+        "miscellaneous",
+        "management"
     ]
     dependencies = [
         "event",
@@ -84,8 +80,9 @@ client.run(str(os.getenv("token")))
 
 def signal_handler(sig, frame):
     print('Disconnecting Wavelink.')
-    print('Shutting Down.')
     client.wavelink.disconnect()
+    print('Shutting Down.')
+    exit()
 
 signal.signal(signal.SIGTERM, signal_handler)
 print('Shutting Down.')
