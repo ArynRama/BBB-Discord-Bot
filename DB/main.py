@@ -14,9 +14,6 @@ version = "2.4.0"
 intents = discord.Intents.all()
 tracemalloc.start()
 
-def get_prefix():
-    return commands.when_mentioned_or(str(prefix()))
-
 class clients(bridge.Bot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -31,7 +28,7 @@ class clients(bridge.Bot):
     preConfig = os.getenv("FB_Info")
     firebaseConfig = json.loads(preConfig)
 
-    command_prefix=get_prefix
+    command_prefix=prefix()
 
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
