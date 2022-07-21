@@ -15,11 +15,11 @@ class Events(commands.Cog):
     async def on_command(self, ctx):
         if ctx.author != self.client.user:
             try:
-                await ctx.command.delete()
+                await ctx.message.delete()
             except:
                 embed = discord.Embed(
                     title="Missing Permission.", color=botcolor())
-                await message.channel.send(embed=embed, delete_after=5)
+                await ctx.channel.send(embed=embed, delete_after=5)
                 raise commands.BotMissingPermissions("DeleteMessages")
     
     @commands.Cog.listener()
