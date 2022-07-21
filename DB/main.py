@@ -15,7 +15,7 @@ intents = discord.Intents.all()
 tracemalloc.start()
 
 def get_prefix():
-    return commands.when_mentioned_or() + prefix()
+    return [commands.when_mentioned_or(), prefix()]
 
 class clients(bridge.Bot):
     def __init__(self,*args,**kwargs):
