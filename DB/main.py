@@ -32,10 +32,7 @@ class clients(bridge.Bot):
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
 
-def get_prefix(Bot, message):
-    return commands.when_mentioned_or(prefix())
-
-client = clients(command_prefix=get_prefix, description=description, intent=intents, help_command=HelpCmd())
+client = clients(command_prefix='-', description=description, intent=intents, help_command=HelpCmd())
 
 class LoadCogs:
 
