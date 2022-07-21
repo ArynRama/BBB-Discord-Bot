@@ -14,9 +14,6 @@ version = "2.4.0"
 intents = discord.Intents.all()
 tracemalloc.start()
 
-def get_prefix():
-    return commands.when_mentioned_or('-')
-
 class clients(bridge.Bot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -26,12 +23,12 @@ class clients(bridge.Bot):
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
         print('------')
-        print(f'Prefix: {prefix()}')
+        print(f'Prefix: -')
 
     preConfig = os.getenv("FB_Info")
     firebaseConfig = json.loads(preConfig)
 
-    command_prefix=get_prefix
+    command_prefix='-'
 
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
