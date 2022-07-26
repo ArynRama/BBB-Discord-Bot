@@ -4,7 +4,7 @@ import asyncio
 import discord
 import wavelink
 from typing import Optional
-from discord.ext import commands, bridge
+from discord.ext import commands
 from essential.player import Player
 from essential.checks import is_dev
 from essential.config import botcolor, devs

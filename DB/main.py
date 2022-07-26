@@ -33,7 +33,6 @@ class clients(commands.Bot):
     db = firebase.database()
 
 client = clients(command_prefix='-', description=description, intent=intents, help_command=HelpCmd())
-
 class LoadCogs:
     extentions = [
         "music",
