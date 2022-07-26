@@ -5,12 +5,15 @@ import discord
 import pyrebase
 import tracemalloc
 from discord import client
-from discord.ext import commands
+from discord.ext import commands, bridge
 from essential.help import HelpCmd
+from essential.config import prefix
 
 description = f'''A bot I made for BBB.'''
 version = "2.4.0"
 intents = discord.Intents.all()
+intents.members = True
+intents.message_content = True
 tracemalloc.start()
 
 
@@ -22,6 +25,7 @@ class clients(commands.Bot):
         print(f'Logged in as {client.user} (ID: {client.user.id})')
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
+        print(f'Prefix: {prefix()}')
         print('------')
 
     preConfig = os.getenv("FB_Info")
@@ -30,7 +34,7 @@ class clients(commands.Bot):
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
 
-client = clients(command_prefix='-', description=description, intent=intents, help_command=HelpCmd())
+client = clients(command_prefix=commands.when_mentioned_or(prefix()), description=description, intent=intents, help_command=HelpCmd())
 class LoadCogs:
     extentions = [
         "music",

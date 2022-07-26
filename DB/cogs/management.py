@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, bridge
 
 from DB.essential.config import botcolor
 from ..essential.checks import is_dev
@@ -8,7 +8,7 @@ class Management(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    commands.command()
+    @bridge.bridge_command()
     @is_dev
     async def whois(self, ctx, args):
         lookup = self.client.fetch_user(args)

@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, bridge
 from essential.config import devs
 from essential.errors import NotDev
 

@@ -1,6 +1,6 @@
 import discord
 from essential.config import botcolor
-from discord.ext import commands
+from discord.ext import commands, bridge
 
 hidden_cogs = ('Config','Events')
 class HelpCmd(commands.HelpCommand):

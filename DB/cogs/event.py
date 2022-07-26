@@ -1,6 +1,6 @@
 import discord
 from types import NoneType
-from discord.ext import commands
+from discord.ext import commands, bridge
 from essential.config import botcolor, prefix
 
 class Events(commands.Cog):
