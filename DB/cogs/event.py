@@ -11,16 +11,16 @@ class Events(commands.Cog):
     async def on_ready(self):
         print("Events has been loaded.")
 
-    @commands.Cog.listener()
-    async def on_command(self, ctx):
-        if ctx.author != self.client.user:
-            try:
-                await ctx.message.delete()
-            except:
-                embed = discord.Embed(
-                    title="Missing Permission.", color=botcolor())
-                await ctx.channel.send(embed=embed, delete_after=5)
-                raise commands.BotMissingPermissions("DeleteMessages")
+    # @commands.Cog.listener()
+    # async def on_command(self, ctx):
+    #     if ctx.author != self.client.user:
+    #         try:
+    #             await ctx.message.delete()
+    #         except:
+    #             embed = discord.Embed(
+    #                 title="Missing Permission.", color=botcolor())
+    #             await ctx.channel.send(embed=embed, delete_after=5)
+    #             raise commands.BotMissingPermissions("DeleteMessages")
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
