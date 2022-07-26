@@ -6,7 +6,6 @@ import pyrebase
 import tracemalloc
 from discord import client
 from discord.ext import commands
-from essential.config import prefix
 from essential.help import HelpCmd
 
 description = f'''A bot I made for BBB.'''
@@ -24,7 +23,6 @@ class clients(commands.Bot):
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
         print('------')
-        print(f'Prefix: {prefix()}')
 
     preConfig = os.getenv("FB_Info")
     firebaseConfig = json.loads(preConfig)
