@@ -5,7 +5,7 @@ import discord
 import pyrebase
 import tracemalloc
 from discord import client
-from discord.ext import commands, bridge
+from discord.ext import commands
 from essential.config import prefix
 from essential.help import HelpCmd
 
@@ -15,7 +15,7 @@ intents = discord.Intents.all()
 tracemalloc.start()
 
 
-class clients(bridge.Bot):
+class clients(commands.Bot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
 

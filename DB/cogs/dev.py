@@ -26,7 +26,7 @@ class Dev(commands.Cog):
                 self.client.db.child("servers").child(str(i.id)).set(
                     {"DJ-Only": "False", "DJ-Role": "None"})
 
-    @commands.command(aliases=["shutdown", "logout"])
+    commands.command(aliases=["shutdown", "logout"])
     async def kill(self, ctx: commands.Context):
         """Shutsdown the bot."""
         embed = discord.Embed(
@@ -98,7 +98,7 @@ class Dev(commands.Cog):
             title=f"Added {args.lower()}.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
     
-    @commands.command()
+    commands.command()
     async def update_users(self, ctx):
         users = self.client.db.child('users').get().val()
         for guild in self.client.guilds:
@@ -112,7 +112,7 @@ class Dev(commands.Cog):
         embed = discord.Embed(title="Updated users.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
 
-    @commands.command()
+    commands.command()
     async def update_servers(self, ctx):
         guilds = self.client.db.child('servers').get().val()
         for guild in self.client.guilds:

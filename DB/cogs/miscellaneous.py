@@ -20,14 +20,14 @@ class Miscellaneous(commands.Cog):
     async def on_ready(self):
         print("Miscellaneous has been loaded.")
 
-    @commands.command()
+    commands.command()
     async def annoy(self, ctx: commands.Context, user: discord.Member, times: int = 10):
         """Mentions user alot of times"""
         for a in range(times):
             await ctx.send(user.mention)
             await asyncio.sleep(0.5)
     
-    @commands.command(aliases=["vcu","vu","voicechannelupdate","update"])
+    commands.command(aliases=["vcu","vu","voicechannelupdate","update"])
     async def voiceupdate(self, ctx, arg: str = "toggle", user: discord.Member = None):
         author = ctx.author.id
         if user == None:

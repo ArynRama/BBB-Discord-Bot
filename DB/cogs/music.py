@@ -67,7 +67,7 @@ class Music(commands.Cog):
         else:
             await player.play(queue.get())
 
-    @bridge.bridge_command(pass_context=True, aliases=["connect", "c", "j"])
+    @commands.command(pass_context=True, aliases=["connect", "c", "j"])
     async def join(self, ctx: commands.Context):
         """Makes the bot join the channel you're in"""
         player = Player()
@@ -78,7 +78,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title=f"You must be connected to a voice channel.")
             await ctx.send(embed = embed, delete_after=5)
 
-    @bridge.bridge_command(pass_context=True, aliases=["forceconnect", "fc", "fj"])
+    @commands.command(pass_context=True, aliases=["forceconnect", "fc", "fj"])
     @is_dev()
     async def forcejoin(self, ctx: commands.Context, *, channel:typing.Optional[discord.VoiceChannel]=None):
         """Makes the bot join the channel you're in"""
@@ -91,7 +91,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title=f"Joining {channel.name}")
             await ctx.send(embed = embed, delete_after=5)
 
-    @bridge.bridge_command(pass_context=True, aliases=["disconnect", "dc","away"])
+    @commands.command(pass_context=True, aliases=["disconnect", "dc","away"])
     async def leave(self, ctx: commands.Context):
         """Makes the bot leave the voice channel."""
         player = ctx.voice_client
@@ -107,7 +107,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title = "You are not in the voice channel.")
             await ctx.send(embed = embed, delete_after=5)
  
-    @bridge.bridge_command(pass_context=True, aliases=["p", "sing"])
+    @commands.command(pass_context=True, aliases=["p", "sing"])
     async def play(self, ctx:commands.Context, *, search:wavelink.YouTubeMusicTrack= None):
         """Plays music."""
         if search == None:
@@ -130,7 +130,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title = "You must be connected to a voice channel.")
             await ctx.send(embed = embed, delete_after=5)
         
-    @bridge.bridge_command(pass_context=True, aliases=["pn", "addfrontqueue"])
+    @commands.command(pass_context=True, aliases=["pn", "addfrontqueue"])
     async def playnext(self, ctx:commands.Context, *, search:wavelink.YouTubeMusicTrack= None):
         """Adds music to the queue."""
         if search == None:
@@ -154,7 +154,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title = "You must be connected to a voice channel.")
             await ctx.send(embed = embed, delete_after=5)
 
-    @bridge.bridge_command(pass_context=True, aliases=["rest", "wait"])
+    @commands.command(pass_context=True, aliases=["rest", "wait"])
     async def pause(self, ctx: commands.Context):
         """Pauses the music."""
         player = ctx.voice_client
@@ -170,7 +170,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title=f"You must be connected to {ctx.voice_client.channel}.")
             await ctx.send(embed = embed, delete_after=5)
 
-    @bridge.bridge_command(pass_context=True)
+    @commands.command(pass_context=True)
     async def resume(self, ctx: commands.Context):
         """Resumes the music"""
         if ctx.author.voice or str(ctx.author.id) in devs():
@@ -186,7 +186,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title = f"You must be connected to {ctx.voice_client.channel}.")
             await ctx.send(embed = embed, delete_after=5)
 
-    @bridge.bridge_command(pass_context=True)
+    @commands.command(pass_context=True)
     async def stop(self, ctx: commands.Context):
         """Stops the music."""
         if ctx.author.voice or str(ctx.author.id) in devs():
@@ -220,7 +220,7 @@ class Music(commands.Cog):
                 if not voice.is_connected():
                     break
 
-    @bridge.bridge_command(pass_context=True)
+    @commands.command(pass_context=True)
     async def queue(self, ctx: commands.Context):
         """View the queue."""
         queue = ctx.voice_client.Queue
@@ -236,7 +236,7 @@ class Music(commands.Cog):
         #     embed = discord.Embed(color=botcolor(), title="No songs currently queued.")
         #     await ctx.send(embed=embed, delete_after= 5)
     
-    @bridge.bridge_command(pass_context=True)
+    @commands.command(pass_context=True)
     async def skip(self, ctx: commands.Context, index: Optional[int]):
         """Skip this song."""
         if ctx.author.voice:
@@ -257,7 +257,7 @@ class Music(commands.Cog):
             embed = discord.Embed(color=botcolor(), title="You must be connected to a voice channel.")
             await ctx.send(embed=embed, delete_after=5)
 
-    @bridge.bridge_command(aliases=['ff','fastforward'])
+    @commands.command(aliases=['ff','fastforward'])
     async def seek(self, ctx: commands.Context, *, time: str = ""):
         player: Player = ctx.voice_client
         if time == "":
@@ -296,7 +296,7 @@ class Music(commands.Cog):
             embed = discord.Embed(title="Invalid time passed.", color=botcolor())
             await ctx.send(embed=embed, delete_after=5)
 
-    @bridge.bridge_command(aliases=['v'])
+    @commands.command(aliases=['v'])
     async def volume(self, ctx: commands.Context, volume):
         player = ctx.voice_client
         if volume == "":

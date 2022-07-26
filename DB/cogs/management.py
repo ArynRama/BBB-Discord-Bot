@@ -8,7 +8,7 @@ class Management(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    commands.command()
     @is_dev
     async def whois(self, ctx, args):
         lookup = self.client.fetch_user(args)
