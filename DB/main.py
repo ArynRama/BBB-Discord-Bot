@@ -35,7 +35,6 @@ class clients(bridge.Bot):
 client = clients(command_prefix='-', description=description, intent=intents, help_command=HelpCmd())
 
 class LoadCogs:
-
     extentions = [
         "music",
         "miscellaneous",
