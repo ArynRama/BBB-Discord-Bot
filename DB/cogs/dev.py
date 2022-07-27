@@ -37,7 +37,7 @@ class Dev(commands.Cog):
         await self.client.close()
     
     @bridge.bridge_command()
-    async def cog(self, ctx: bridge.BridgeContext, subcommand:discord.Option(str, "Subcommand you want to execute", default = "None", choices= ["load", "unload", "reload", "add"]), cog = "None"):
+    async def cog(self, ctx: bridge.BridgeContext, subcommand:discord.Option(str, "Subcommand you want to execute", default = "None", choices= ["load", "unload", "reload", "add"])= "None", cog = "None"):
         enable_aliases=["activate", "a", "e","load","l", "enable"]
         reload_aliases=["reactivate","r","reenable", "reload"]
         disable_aliases=["deactivate","d","u","disable", "unload"]
@@ -47,7 +47,7 @@ class Dev(commands.Cog):
         check = cogg.lower() + ".py"
         if subcommand == "None":
             embed=discord.Embed(title="Cogs", color=botcolor())
-            command = f"```prolog\nEnable\nUnload\nReload```"
+            command = f"```prolog\nEnable\nUnload\nReload\nList\nAdd```"
             embed.add_field(name="Sub-Commands", value=command)
             await ctx.send(embed=embed, delete_after=5)
         elif subcommand not in enable_aliases or subcommand not in disable_aliases or subcommand not in reload_aliases or subcommand != "add":

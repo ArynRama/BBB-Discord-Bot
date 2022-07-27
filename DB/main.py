@@ -76,9 +76,13 @@ client.run(str(os.getenv("token")))
 
 def signal_handler(sig, frame):
     print('Disconnecting Wavelink.')
-    client.wavelink.disconnect()
-    print('Shutting Down.')
-    exit()
+    try:
+        client.wavelink.disconnect()
+        print('Shutting Down.')
+        exit()
+    except:
+        print('Shutting Down.')
+        exit()
 
 signal.signal(signal.SIGTERM, signal_handler)
 print('Shutting Down.')
