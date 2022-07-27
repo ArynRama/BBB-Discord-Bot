@@ -33,12 +33,13 @@ class Dev(commands.Cog):
         
         embed = discord.Embed(
             title="Bot is disconnecting.", color=botcolor())
-        await ctx.send(embed=embed, delete_after=5)
+        await ctx.respond(embed=embed, delete_after=5)
         await self.client.change_presence(status=discord.Status.offline)
         await self.client.close()
     
     @bridge.bridge_command()
     async def cog(self, ctx: bridge.BridgeContext, subcommand:discord.Option(str, "Subcommand you want to execute", default = "None", choices= ["load", "unload", "reload", "add"]), cog = "None"):
+        """Controll the cogs."""
         enable_aliases=["activate", "a", "e","load","l", "enable"]
         reload_aliases=["reactivate","r","reenable", "reload"]
         disable_aliases=["deactivate","d","u","disable", "unload"]
@@ -50,38 +51,38 @@ class Dev(commands.Cog):
             embed=discord.Embed(title="Cogs", color=botcolor())
             command = f"```prolog\nEnable\nUnload\nReload\nList\nAdd```"
             embed.add_field(name="Sub-Commands", value=command)
-            await ctx.respond(embed=embed, delete_after=5)
+            await ctx.respond(embed=embed, delete_after=15)
         elif subcommand not in enable_aliases or subcommand not in disable_aliases or subcommand not in reload_aliases or subcommand != "add":
             embed=discord.Embed(title="Invalid Subcommand.", color=botcolor())
-            await ctx.send(embed=embed, delete_after=5)
+            await ctx.respond(embed=embed, delete_after=5)
         elif cog == "None":
             embed=discord.Embed(title="Please add a cog.", color=botcolor())
-            await ctx.send(embed=embed, delete_after=5)
+            await ctx.respond(embed=embed, delete_after=5)
         elif check in cogs:
             if subcommand in enable_aliases:
                 self.client.load_extension(cogg)
                 embed = discord.Embed(title=f"Loaded {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
+                await ctx.respond(embed=embed, delete_after=5)
             elif subcommand in disable_aliases:
                 self.client.unload_extension(cogg)
                 embed = discord.Embed(
                     title=f"Unloaded {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
+                await ctx.respond(embed=embed, delete_after=5)
             elif subcommand in reload_aliases:
                 self.client.unload_extension(cog)
                 self.client.load_extension(cog)
                 embed = discord.Embed(
                     title=f"Reloaded {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
+                await ctx.respond(embed=embed, delete_after=5)
             elif subcommand == "add":
                 self.client.add_cog(cog)
                 embed = discord.Embed(
                     title=f"Added {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
+                await ctx.respond(embed=embed, delete_after=5)
         else:
             embed = discord.Embed(
                 title=f"{cog.title()} is not a valid cog.", color=botcolor())
-            await ctx.send(embed=embed, delete_after=5)
+            await ctx.respond(embed=embed, delete_after=5)
     
     bridge.bridge_command()
     async def update_users(self, ctx):
@@ -95,7 +96,7 @@ class Dev(commands.Cog):
                         {'dj': 'False', 'vc_update': 'False'})
                 await asyncio.sleep(2)
         embed = discord.Embed(title="Updated users.", color=botcolor())
-        await ctx.send(embed=embed, delete_after=5)
+        await ctx.respond(embed=embed, delete_after=5)
 
     bridge.bridge_command()
     async def update_servers(self, ctx):
@@ -107,7 +108,7 @@ class Dev(commands.Cog):
                 self.client.db.child('users').child(str(guild.id)).set(
                     {'DJ-Only': 'False', 'DJ-Role': 'None'})
         embed = discord.Embed(title="Updated servers.", color=botcolor())
-        await ctx.send(embed=embed, delete_after=5)
+        await ctx.respond(embed=embed, delete_after=5)
 
 def setup(client):
     client.add_cog(Dev(client))
