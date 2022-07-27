@@ -25,7 +25,6 @@ class clients(commands.Bot):
         print(f'Logged in as {client.user} (ID: {client.user.id})')
         print(f'Bot Version: {version}')
         print('Owner: ArynRama#6043')
-        print(f'Prefix: {prefix()}')
         print('------')
 
     preConfig = os.getenv("FB_Info")
@@ -34,7 +33,7 @@ class clients(commands.Bot):
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
 
-client = clients(command_prefix=commands.when_mentioned_or(prefix()), description=description, intent=intents, help_command=HelpCmd())
+client = clients(description=description, intent=intents, help_command=HelpCmd())
 class LoadCogs:
     extentions = [
         "music",

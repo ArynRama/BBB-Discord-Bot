@@ -38,7 +38,7 @@ class Dev(commands.Cog):
         await self.client.close()
     
     @bridge.bridge_command()
-    async def cog(self, ctx: bridge.BridgeContext, subcommand:Union[discord.Option(str, "Subcommand you want to execute", default = "None", choices= ["load", "unload", "reload", "add"]), str]= "None", cog = "None"):
+    async def cog(self, ctx: bridge.BridgeContext, subcommand:discord.Option(str, "Subcommand you want to execute", default = "None", choices= ["load", "unload", "reload", "add"]), cog = "None"):
         enable_aliases=["activate", "a", "e","load","l", "enable"]
         reload_aliases=["reactivate","r","reenable", "reload"]
         disable_aliases=["deactivate","d","u","disable", "unload"]
