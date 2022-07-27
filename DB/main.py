@@ -7,7 +7,6 @@ import tracemalloc
 from discord import client
 from discord.ext import commands, bridge
 from essential.help import HelpCmd
-from essential.config import prefix
 
 description = f'''A bot I made for BBB.'''
 version = "2.4.0"
@@ -17,7 +16,7 @@ intents.message_content = True
 tracemalloc.start()
 
 
-class clients(commands.Bot):
+class clients(bridge.Bot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
 
