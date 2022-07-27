@@ -32,6 +32,9 @@ class clients(commands.Bot):
 
     firebase = pyrebase.initialize_app(firebaseConfig)
     db = firebase.database()
+    auth = firebase.auth()
+    authed = auth.sign_in_with_email_and_password(os.getenv("FB_Email"), os.getenv("FB_Pass"))
+    idToken = auth.refresh(authed["refreshToken"])["idToken"]
 
 client = clients(description=description, intent=intents, help_command=HelpCmd())
 class LoadCogs:

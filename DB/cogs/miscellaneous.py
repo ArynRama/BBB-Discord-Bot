@@ -34,15 +34,15 @@ class Miscellaneous(commands.Cog):
             subject = ctx.author.id
         else:
             subject = user.id
-        ids = self.client.db.child("users").get().val()
+        ids = self.client.db.child("users").get(self.client.idToken).val()
         if subject in ids:
-            value = self.client.db.child("users").child(str(author)).child("vc_update").get().val()
+            value = self.client.db.child("users").child(str(author)).child("vc_update").get(self.client.idToken).val()
             if value == "False":
                 if arg == "toggle":
-                    self.client.db.child("users").child(str(author)).child("vc_update").set("True")
+                    self.client.db.child("users").child(str(author)).child("vc_update").set("True", self.client.idToken)
                 elif arg == "True":
                     self.client.db.child("users").child(
-                        str(author)).child("vc_update").set("True")
+                        str(author)).child("vc_update").set("True", self.client.idToken)
                 else:
                     embed = discord.Embed(
                         title=f"{arg.title()} is not a valid argument.", color=botcolor())
@@ -50,10 +50,10 @@ class Miscellaneous(commands.Cog):
             elif value == "True":
                 if arg == "toggle":
                     self.client.db.child("users").child(str(author)).child(
-                        "vc_update").set("False")
+                        "vc_update").set("False", self.client.idToken)
                 elif arg == "False":
                     self.client.db.child("users").child(str(author)).child(
-                        "vc_update").set("False")
+                        "vc_update").set("False", self.client.idToken)
                 else:
                     embed = discord.Embed(title=f"{arg.title()} is not a valid argument.", color=botcolor())
                     await ctx.send(embed=embed, delete_after=5)
