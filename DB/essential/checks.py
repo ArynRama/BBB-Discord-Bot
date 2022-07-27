@@ -4,7 +4,7 @@ from essential.config import devs
 from essential.errors import NotDev
 
 def is_dev():
-    def predicate(ctx: commands.Context):
+    def predicate(ctx: bridge.BridgeContext):
         try:
             if str(ctx.author.id) in devs():
                 return True

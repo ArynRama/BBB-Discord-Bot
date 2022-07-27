@@ -15,7 +15,7 @@ class Music(commands.Cog):
 
         self.client.loop.create_task(self.connect_nodes())
 
-    async def cog_check(self, ctx: commands.Context):
+    async def cog_check(self, ctx: bridge.BridgeContext):
         if isinstance(ctx.channel, discord.DMChannel):
             embed = discord.Embed(title="Music commands are not available in DMs.", color=botcolor())
             await ctx.send(embed=embed, delete_after=5)
@@ -68,7 +68,7 @@ class Music(commands.Cog):
             await player.play(queue.get())
 
     @bridge.bridge_command(pass_context=True, aliases=["connect", "c", "j"])
-    async def join(self, ctx: commands.Context):
+    async def join(self, ctx: bridge.BridgeContext):
         """Makes the bot join the channel you're in"""
         player = Player()
         if ctx.author.voice:
@@ -80,7 +80,7 @@ class Music(commands.Cog):
 
     @bridge.bridge_command(pass_context=True, aliases=["forceconnect", "fc", "fj"])
     @is_dev()
-    async def forcejoin(self, ctx: commands.Context, *, channel:typing.Optional[discord.VoiceChannel]=None):
+    async def forcejoin(self, ctx: bridge.BridgeContext, *, channel:typing.Optional[discord.VoiceChannel]=None):
         """Makes the bot join the channel you're in"""
         player = Player()
         if channel == None:
@@ -92,7 +92,7 @@ class Music(commands.Cog):
             await ctx.send(embed = embed, delete_after=5)
 
     @bridge.bridge_command(pass_context=True, aliases=["disconnect", "dc","away"])
-    async def leave(self, ctx: commands.Context):
+    async def leave(self, ctx: bridge.BridgeContext):
         """Makes the bot leave the voice channel."""
         player = ctx.voice_client
         if str(ctx.author.id) in devs():
@@ -108,7 +108,7 @@ class Music(commands.Cog):
             await ctx.send(embed = embed, delete_after=5)
  
     @bridge.bridge_command(pass_context=True, aliases=["p", "sing"])
-    async def play(self, ctx:commands.Context, *, search:wavelink.YouTubeMusicTrack= None):
+    async def play(self, ctx:bridge.BridgeContext, *, search:wavelink.YouTubeMusicTrack= None):
         """Plays music."""
         if search == None:
             embed = discord.Embed(title="You must include a song.",color=botcolor())
@@ -131,7 +131,7 @@ class Music(commands.Cog):
             await ctx.send(embed = embed, delete_after=5)
         
     @bridge.bridge_command(pass_context=True, aliases=["pn", "addfrontqueue"])
-    async def playnext(self, ctx:commands.Context, *, search:wavelink.YouTubeMusicTrack= None):
+    async def playnext(self, ctx:bridge.BridgeContext, *, search:wavelink.YouTubeMusicTrack= None):
         """Adds music to the queue."""
         if search == None:
             embed = discord.Embed(title="You must include a song.",color=botcolor())
@@ -155,7 +155,7 @@ class Music(commands.Cog):
             await ctx.send(embed = embed, delete_after=5)
 
     @bridge.bridge_command(pass_context=True, aliases=["rest", "wait"])
-    async def pause(self, ctx: commands.Context):
+    async def pause(self, ctx: bridge.BridgeContext):
         """Pauses the music."""
         player = ctx.voice_client
         if ctx.author.voice or str(ctx.author.id) in devs():
@@ -171,7 +171,7 @@ class Music(commands.Cog):
             await ctx.send(embed = embed, delete_after=5)
 
     @bridge.bridge_command(pass_context=True)
-    async def resume(self, ctx: commands.Context):
+    async def resume(self, ctx: bridge.BridgeContext):
         """Resumes the music"""
         if ctx.author.voice or str(ctx.author.id) in devs():
             player = ctx.voice_client
@@ -187,7 +187,7 @@ class Music(commands.Cog):
             await ctx.send(embed = embed, delete_after=5)
 
     @bridge.bridge_command(pass_context=True)
-    async def stop(self, ctx: commands.Context):
+    async def stop(self, ctx: bridge.BridgeContext):
         """Stops the music."""
         if ctx.author.voice or str(ctx.author.id) in devs():
             player = ctx.voice_client
@@ -221,7 +221,7 @@ class Music(commands.Cog):
                     break
 
     @bridge.bridge_command(pass_context=True)
-    async def queue(self, ctx: commands.Context):
+    async def queue(self, ctx: bridge.BridgeContext):
         """View the queue."""
         queue = ctx.voice_client.Queue
         print(queue)
@@ -237,7 +237,7 @@ class Music(commands.Cog):
         #     await ctx.send(embed=embed, delete_after= 5)
     
     @bridge.bridge_command(pass_context=True)
-    async def skip(self, ctx: commands.Context, index: Optional[int]):
+    async def skip(self, ctx: bridge.BridgeContext, index: Optional[int]):
         """Skip this song."""
         if ctx.author.voice:
             if ctx.voice_client:
@@ -258,7 +258,7 @@ class Music(commands.Cog):
             await ctx.send(embed=embed, delete_after=5)
 
     @bridge.bridge_command(aliases=['ff','fastforward'])
-    async def seek(self, ctx: commands.Context, *, time: str = ""):
+    async def seek(self, ctx: bridge.BridgeContext, *, time: str = ""):
         player: Player = ctx.voice_client
         if time == "":
             duration = player.track.info['length']/1000
@@ -297,7 +297,7 @@ class Music(commands.Cog):
             await ctx.send(embed=embed, delete_after=5)
 
     @bridge.bridge_command(aliases=['v'])
-    async def volume(self, ctx: commands.Context, volume):
+    async def volume(self, ctx: bridge.BridgeContext, volume):
         player = ctx.voice_client
         if volume == "":
             await ctx.send(player.volume, delete_after=5)
