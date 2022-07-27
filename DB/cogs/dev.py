@@ -50,7 +50,7 @@ class Dev(commands.Cog):
             embed=discord.Embed(title="Cogs", color=botcolor())
             command = f"```prolog\nEnable\nUnload\nReload\nList\nAdd```"
             embed.add_field(name="Sub-Commands", value=command)
-            await ctx.send(embed=embed, delete_after=5)
+            await ctx.respond(embed=embed, delete_after=5)
         elif subcommand not in enable_aliases or subcommand not in disable_aliases or subcommand not in reload_aliases or subcommand != "add":
             embed=discord.Embed(title="Invalid Subcommand.", color=botcolor())
             await ctx.send(embed=embed, delete_after=5)
