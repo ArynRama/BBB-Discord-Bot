@@ -20,7 +20,7 @@ class Miscellaneous(commands.Cog):
     async def on_ready(self):
         print("Miscellaneous has been loaded.")
 
-    bridge.bridge_command()
+    @bridge.bridge_command()
     async def annoy(self, ctx: commands.Context, user: discord.Member, times: int = 10):
         """Mentions user alot of times"""
         for a in range(times):
