@@ -35,9 +35,9 @@ class Dev(commands.Cog):
         await ctx.respond(embed=embed, delete_after=5)
         await self.client.change_presence(status=discord.Status.offline)
         await self.client.close()
-    
+
     @bridge.bridge_command()
-    async def cog(self, ctx: bridge.BridgeContext, subcommand:discord.Option(str, "Subcommand you want to execute", default = "None", choices= ["load", "unload", "reload", "add"], name="Subcommand"), cog = "None"):
+    async def cog(self, ctx: bridge.BridgeContext, Subcommand:discord.Option(str, "Subcommand you want to execute", default = "None", choices= ["load", "unload", "reload", "add"]), cog = "None"):
         """Controll the cogs."""
         enable_aliases=["activate", "a", "e","load","l", "enable"]
         reload_aliases=["reactivate","r","reenable", "reload"]
@@ -46,34 +46,34 @@ class Dev(commands.Cog):
         cogs = [cogg for cogg in listdir(mypath) if isfile(join(mypath, cogg))]
         cogg = "cogs."+cog.lower()
         check = cogg.lower() + ".py"
-        if subcommand == "None":
+        if Subcommand == "None":
             embed=discord.Embed(title="Cogs", color=botcolor())
             command = f"```prolog\nEnable\nUnload\nReload\nList\nAdd```"
             embed.add_field(name="Sub-Commands", value=command)
             await ctx.respond(embed=embed, delete_after=15)
-        elif subcommand not in enable_aliases or subcommand not in disable_aliases or subcommand not in reload_aliases or subcommand != "add":
+        elif Subcommand not in enable_aliases or Subcommand not in disable_aliases or Subcommand not in reload_aliases or Subcommand != "add":
             embed=discord.Embed(title="Invalid Subcommand.", color=botcolor())
             await ctx.respond(embed=embed, delete_after=5)
         elif cog == "None":
             embed=discord.Embed(title="Please add a cog.", color=botcolor())
             await ctx.respond(embed=embed, delete_after=5)
         elif check in cogs:
-            if subcommand in enable_aliases:
+            if Subcommand in enable_aliases:
                 self.client.load_extension(cogg)
                 embed = discord.Embed(title=f"Loaded {cog.lower()}.", color=botcolor())
                 await ctx.respond(embed=embed, delete_after=5)
-            elif subcommand in disable_aliases:
+            elif Subcommand in disable_aliases:
                 self.client.unload_extension(cogg)
                 embed = discord.Embed(
                     title=f"Unloaded {cog.lower()}.", color=botcolor())
                 await ctx.respond(embed=embed, delete_after=5)
-            elif subcommand in reload_aliases:
+            elif Subcommand in reload_aliases:
                 self.client.unload_extension(cog)
                 self.client.load_extension(cog)
                 embed = discord.Embed(
                     title=f"Reloaded {cog.lower()}.", color=botcolor())
                 await ctx.respond(embed=embed, delete_after=5)
-            elif subcommand == "add":
+            elif Subcommand == "add":
                 self.client.add_cog(cog)
                 embed = discord.Embed(
                     title=f"Added {cog.lower()}.", color=botcolor())
