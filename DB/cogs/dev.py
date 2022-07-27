@@ -1,5 +1,4 @@
 import asyncio
-from ctypes import _StructUnionBase
 import discord
 from os import listdir
 from discord.ext import commands, bridge
@@ -37,53 +36,71 @@ class Dev(commands.Cog):
         await self.client.change_presence(status=discord.Status.offline)
         await self.client.close()
     
-    @bridge.bridge_command()
-    async def cog(self, ctx: bridge.BridgeContext, subcommand = "None", cog = "None"):
-        enable_aliases=["activate", "a", "e","load","l", "enable"]
-        reload_aliases=["reactivate","r","reenable", "reload"]
-        disable_aliases=["deactivate","d","u","disable", "unload"]
+    cogs = discord.SlashCommandGroup(name="cog", description="Controll cogs.")
+
+    # async def cog(self, ctx: bridge.BridgeContext):
+    #         embed=discord.Embed(title="Cogs", color=botcolor())
+    #         command = f"```prolog\nEnable\nUnload\nReload```"
+    #         embed.add_field(name="Sub-Commands", value=command)
+    #         await ctx.send(embed=embed, delete_after=5)
+
+    @cogs.command(aliases=["activate", "a", "e","load","l"])
+    async def enable(self, ctx: bridge.BridgeContext, args: str):
         mypath="./DB/cogs"
-        cogs = [cogg for cogg in listdir(mypath) if isfile(join(mypath, cogg))]
-        cogg = "cogs."+cog.lower()
-        check = cogg.lower() + ".py"
-        if subcommand == "None":
-            embed=discord.Embed(title="Cogs", color=botcolor())
-            command = f"```prolog\nEnable\nUnload\nReload```"
-            embed.add_field(name="Sub-Commands", value=command)
+        cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
+        cog = "cogs."+args.lower()
+        check = args.lower() + ".py"
+        if check in cogs:
+            self.client.load_extension(cog)
+            embed = discord.Embed(title=f"Loaded {args.lower()}.", color=botcolor())
             await ctx.send(embed=embed, delete_after=5)
-        elif subcommand not in enable_aliases or subcommand not in disable_aliases or subcommand not in reload_aliases or subcommand != "add":
-            embed=discord.Embed(title="Invalid Subcommand.", color=botcolor())
-            await ctx.send(embed=embed, delete_after=5)
-        elif cog == "None":
-            embed=discord.Embed(title="Please add a cog.", color=botcolor())
-            await ctx.send(embed=embed, delete_after=5)
-        elif check in cogs:
-            if subcommand in enable_aliases:
-                self.client.load_extension(cogg)
-                embed = discord.Embed(title=f"Loaded {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
-            elif subcommand in disable_aliases:
-                self.client.unload_extension(cogg)
-                embed = discord.Embed(
-                    title=f"Unloaded {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
-            elif subcommand in reload_aliases:
-                self.client.unload_extension(cog)
-                self.client.load_extension(cog)
-                embed = discord.Embed(
-                    title=f"Reloaded {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
-            elif subcommand == "add":
-                self.client.add_cog(cog)
-                embed = discord.Embed(
-                    title=f"Added {cog.lower()}.", color=botcolor())
-                await ctx.send(embed=embed, delete_after=5)
         else:
             embed = discord.Embed(
-                title=f"{cog.title()} is not a valid cog.", color=botcolor())
+                title=f"{args.title()} is not a valid cog.", color=botcolor())
+            await ctx.send(embed=embed, delete_after=5)
+
+    @cogs.command(aliases=["deactivate","d","u","disable"])
+    async def unload(self,ctx: bridge.BridgeContext,args: str):
+        mypath = "./DB/cogs"
+        cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
+        check = args.lower() + ".py"
+        cog = "cogs."+args.lower()
+        if check in cogs:
+            self.client.unload_extension(cog)
+            embed = discord.Embed(
+                title=f"Unloaded {args.lower()}.", color=botcolor())
+            await ctx.send(embed=embed, delete_after=5)
+        else:
+            embed = discord.Embed(
+                title=f"{args.title()} is not a valid cog.", color=botcolor())
             await ctx.send(embed=embed, delete_after=5)
     
-    bridge.bridge_command()
+    @cogs.command(aliases=["reactivate","r","reenable"])
+    async def reload(self,ctx: bridge.BridgeContext,args: str):
+        mypath = "./DB/cogs"
+        cogs = [cog for cog in listdir(mypath) if isfile(join(mypath, cog))]
+        check = args.lower() + ".py"
+        cog = "cogs." + args.lower()
+        if check in cogs:
+            self.client.unload_extension(cog)
+            self.client.load_extension(cog)
+            embed = discord.Embed(
+                title=f"Reloaded {args.lower()}.", color=botcolor())
+            await ctx.send(embed=embed, delete_after=5)
+        else:
+            embed = discord.Embed(
+                title=f"{args.title()} is not a valid cog.", color=botcolor())
+            await ctx.send(embed=embed, delete_after=5)
+    
+    @cogs.command()
+    async def add(self, ctx: bridge.BridgeContext, args: str):
+        cog = args
+        self.client.add_cog(cog)
+        embed = discord.Embed(
+            title=f"Added {args.lower()}.", color=botcolor())
+        await ctx.send(embed=embed, delete_after=5)
+    
+    @bridge.bridge_command()
     async def update_users(self, ctx):
         users = self.client.db.child('users').get().val()
         for guild in self.client.guilds:
@@ -97,7 +114,7 @@ class Dev(commands.Cog):
         embed = discord.Embed(title="Updated users.", color=botcolor())
         await ctx.send(embed=embed, delete_after=5)
 
-    bridge.bridge_command()
+    @bridge.bridge_command()
     async def update_servers(self, ctx):
         guilds = self.client.db.child('servers').get().val()
         for guild in self.client.guilds:
