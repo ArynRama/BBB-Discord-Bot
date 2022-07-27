@@ -1,7 +1,7 @@
 import discord
 from types import NoneType
 from discord.ext import commands, bridge
-from essential.config import botcolor, prefix
+from essential.config import botcolor
 
 class Events(commands.Cog):
     def __init__(self, client):

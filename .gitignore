@@ -2,6 +2,4 @@ test.py
 test.json
 bbbdbvenv
 __pycache__
-updates.txt
-DB/main_win.py
-DB/essential/config_win.py
+.vscode
